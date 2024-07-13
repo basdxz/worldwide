@@ -1,25 +1,15 @@
 package com.mumfrey.worldeditcui;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
-import com.sk89q.worldedit.forge.WECUIPacketHandler;
+import com.sk89q.worldedit.forge.network.WENetAPI;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import lombok.val;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,12 +25,13 @@ import com.mumfrey.worldeditcui.event.listeners.CUIListenerChannel;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerWorldRender;
 import com.mumfrey.worldeditcui.render.region.CuboidRegion;
 
+import static com.mumfrey.worldeditcui.Tags.*;
 import static cpw.mods.fml.common.network.FMLNetworkEvent.*;
 
-@Mod(modid = Tags.MOD_ID,
-	 name = Tags.MOD_NAME,
-	 version = Tags.MOD_VERSION,
-	 dependencies = "after:worldedit@[6.2.0,);")
+@Mod(modid = MOD_ID,
+	 name = MOD_NAME,
+	 version = MOD_VERSION,
+	 dependencies = "required-after:worldedit@[6.2.0,);")
 public class WorldEditCUI
 {
 	private static final String CHANNEL_WECUI = "WECUI";
@@ -49,15 +40,40 @@ public class WorldEditCUI
 	private WorldClient lastWorld;
 	private EntityPlayerSP lastPlayer;
 
-	private KeyBinding keyBindToggleUI = new KeyBinding("wecui.keys.toggle", Keyboard.KEY_NONE, "wecui.keys.category");
-	private KeyBinding keyBindClearSel = new KeyBinding("wecui.keys.clear", Keyboard.KEY_NONE, "wecui.keys.category");
+	private KeyBinding keyBindToggleUI;
+	private KeyBinding keyBindClearSel;
 
 	private boolean visible = true;
 
 	private CUIListenerWorldRender worldRenderListener;
 	private CUIListenerChannel channelListener;
 
-	private FMLEventChannel WECUI_CHANNEL;
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent evt)
+	{
+		keyBindToggleUI = new KeyBinding("wecui.keys.toggle", Keyboard.KEY_NONE, "wecui.keys.category");
+		keyBindClearSel = new KeyBinding("wecui.keys.clear", Keyboard.KEY_NONE, "wecui.keys.category");
+
+		ClientRegistry.registerKeyBinding(keyBindToggleUI);
+		ClientRegistry.registerKeyBinding(keyBindClearSel);
+
+
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
+
+		WENetAPI.setupCUIHandler(MOD_NAME, (aBoolean, integer) -> {
+
+        }, this::onCustomPayload);
+	}
+
+	public void onCustomPayload(String payload)
+	{
+		try
+		{
+			this.channelListener.onMessage(payload);
+		}
+		catch (Exception ex) {}
+	}
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent evt)
@@ -70,22 +86,6 @@ public class WorldEditCUI
 
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLCommonHandler.instance().bus().register(this);
-
-//		{
-//			if (!Loader.isModLoaded("worldedit")) {
-//				try {
-//					Field f = WECUIPacketHandler.class.getDeclaredField("WECUI_CHANNEL")
-//				}catch (RuntimeException e) {
-//
-//				}
-//			}
-//
-//			if (NetworkRegistry.INSTANCE.hasChannel(CHANNEL_WECUI, Side.CLIENT)) {
-//
-//			}
-//		}
-
-//		NetworkRegistry.INSTANCE.getChannel(CHANNEL_WECUI, Side.CLIENT)
 	}
 
 	@SubscribeEvent
@@ -106,8 +106,7 @@ public class WorldEditCUI
 	 */
 	private void helo()
 	{
-		byte[] buffer = ("v|" + WorldEditCUIController.protocolVersion).getBytes(StandardCharsets.UTF_8);
-		Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C17PacketCustomPayload(CHANNEL_WECUI, buffer));
+		WENetAPI.sendCUIHandshake(4);
 	}
 
 	@SubscribeEvent
@@ -175,7 +174,7 @@ public class WorldEditCUI
 			{
 				this.worldRenderListener.onRender(evt.partialTicks);
 			}
-			catch (Exception ex) {}
+			catch (Exception ignored) {}
 		}
 	}
 }

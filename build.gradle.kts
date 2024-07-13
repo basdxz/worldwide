@@ -17,10 +17,18 @@ minecraft_fp {
 }
 
 repositories {
-    exclusive(mavenpattern(), "com.falsepattern")
+    mavenLocal()
+
+    mavenpattern {
+        content {
+            includeGroup("com.falsepattern")
+        }
+    }
+
     exclusive(maven("sk89q", "https://maven.enginehub.org/repo/"), "com.sk89q", "com.sk89q.lib")
 }
 
 dependencies {
-    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0")
+//    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0")
+    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-5-gb474c5f2:dev")
 }

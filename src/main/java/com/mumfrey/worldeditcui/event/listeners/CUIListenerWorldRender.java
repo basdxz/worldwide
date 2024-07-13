@@ -4,10 +4,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 
+import com.mumfrey.worldeditcui.render.region.BaseRegion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Listener for WorldRenderEvent
@@ -30,40 +30,30 @@ public class CUIListenerWorldRender
 
 	public void onRender(float partialTicks)
 	{
-		RenderHelper.disableStandardItemLighting();
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+		BaseRegion selection = this.controller.getSelection();
+		if (selection == null)
+			return;
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.0F);
-		glDisable(GL_TEXTURE_2D);
-		glDepthMask(false);
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glPushMatrix();
+
+		glDisable(GL11.GL_TEXTURE_2D);
+		glEnable(GL11.GL_BLEND);
+		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL11.GL_LIGHTING);
 
 		try
 		{
 			EntityClientPlayerMP thePlayer = this.minecraft.thePlayer;
-			glTranslated(-this.getPlayerXGuess(thePlayer, partialTicks), -this.getPlayerYGuess(thePlayer, partialTicks), -this.getPlayerZGuess(thePlayer, partialTicks));
+			glTranslated(-this.getPlayerXGuess(thePlayer, partialTicks),
+						 -this.getPlayerYGuess(thePlayer, partialTicks),
+						 -this.getPlayerZGuess(thePlayer, partialTicks));
 			glColor3f(1.0f, 1.0f, 1.0f);
-			if (this.controller.getSelection() != null)
-			{
-				this.controller.getSelection().render();
-			}
-		}
-		catch (Exception e)
-		{
-		}
+			selection.render();
+		} catch (Exception ignored) {}
 
-		glDepthFunc(GL_LEQUAL);
 		glPopMatrix();
-
-		glDepthMask(true);
-		glEnable(GL_TEXTURE_2D);
-		glDisable(GL_BLEND);
-		glAlphaFunc(GL_GREATER, 0.1F);
-
-		RenderHelper.enableStandardItemLighting();
+		glPopAttrib();
 	}
 
 	private double getPlayerXGuess(EntityClientPlayerMP thePlayer, float renderTick)

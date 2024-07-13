@@ -1,5 +1,7 @@
 package com.mumfrey.worldeditcui.render;
 
+import net.minecraft.client.renderer.Tessellator;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -55,6 +57,6 @@ public class LineInfo
 
 	public void prepareColour()
 	{
-		glColor4f(this.red, this.green, this.blue, this.alpha);
+        Tessellator.instance.setColorRGBA_F(this.red, this.green, this.blue, this.alpha);
 	}
 }
