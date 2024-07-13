@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "${modId}",
+    "name": "${modName}",
+    "description": "WorldEdit client interface for Minecraft",
+    "version": "${modVersion}",
+    "mcversion": "${minecraftVersion}",
+    "url": "https://github.com/basdxz/WorldEditCUI",
+    "updateUrl": "",
+    "authorList": [ "yetanotherx", "Mumfrey", "Ven" ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
