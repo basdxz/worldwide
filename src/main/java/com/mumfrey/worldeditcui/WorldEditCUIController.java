@@ -6,67 +6,39 @@ import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.CUISelectionProvider;
 import com.mumfrey.worldeditcui.render.region.BaseRegion;
 import com.mumfrey.worldeditcui.render.region.CuboidRegion;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Main controller class. Uses a pseudo-JavaBeans paradigm. The only real
  * logic here is listener registration.
- *
+ * <p>
  * TODO: Preview mode
  * TODO: Command transactions
  * TODO: Add ability to flash selection
  *
  * @author yetanotherx
  */
-public class WorldEditCUIController
-{
-	private BaseRegion selection;
-	private CUIConfiguration configuration;
-	private CUIEventDispatcher dispatcher;
-	private CUISelectionProvider selectionProvider;
 
-	public void initialize()
-	{
-		this.selection = new CuboidRegion(this);
-		this.configuration = CUIConfiguration.create();
-		this.dispatcher = new CUIEventDispatcher(this);
-		this.selectionProvider = new CUISelectionProvider(this);
+@Getter
+public final class WorldEditCUIController implements InitializationFactory {
+    @Setter
+    private BaseRegion selection;
 
-		try
-		{
-			this.selection.initialize();
-			this.configuration.initialize();
-			this.dispatcher.initialize();
-			this.selectionProvider.initialize();
-		}
-		catch (InitializationException e)
-		{
-			e.printStackTrace();
-			return;
-		}
-	}
+    private CUIConfiguration configuration;
+    private CUIEventDispatcher dispatcher;
+    private CUISelectionProvider selectionProvider;
 
-	public CUIEventDispatcher getDispatcher()
-	{
-		return this.dispatcher;
-	}
+    @Override
+    public void initialize() throws InitializationException {
+        this.selection = new CuboidRegion(this);
+        this.configuration = CUIConfiguration.create();
+        this.dispatcher = new CUIEventDispatcher(this);
+        this.selectionProvider = new CUISelectionProvider(this);
 
-	public CUISelectionProvider getSelectionProvider()
-	{
-		return this.selectionProvider;
-	}
-
-	public CUIConfiguration getConfiguration()
-	{
-		return this.configuration;
-	}
-
-	public BaseRegion getSelection()
-	{
-		return this.selection;
-	}
-
-	public void setSelection(BaseRegion selection)
-	{
-		this.selection = selection;
-	}
+        this.selection.initialize();
+        this.configuration.initialize();
+        this.dispatcher.initialize();
+        this.selectionProvider.initialize();
+    }
 }

@@ -1,14 +1,14 @@
 plugins {
-    id("fpgradle-minecraft") version("0.5.0")
+    id("fpgradle-minecraft") version("0.6.0")
 }
 
-group = "com.mumfrey"
+group = "com.ventooth"
 
 minecraft_fp {
     mod {
         modid   = "worldeditcui"
         name    = "WorldEditCUI"
-        rootPkg = "$group.worldeditcui"
+        rootPkg = "com.mumfrey.worldeditcui"
     }
 
     tokens {
@@ -17,6 +17,7 @@ minecraft_fp {
 }
 
 repositories {
+    //TODO: Remove mavenLocal()
     mavenLocal()
 
     mavenpattern {
@@ -29,7 +30,8 @@ repositories {
 }
 
 dependencies {
-//    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0")
-    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-8-g4236472a:dev")
-    implementation("com.falsepattern:falsepatternlib-mc1.7.10:1.3.0-1-g3b83315:dev")
+    apiSplit("com.falsepattern:falsepatternlib-mc1.7.10:1.3.0-1-g3b83315:dev")
+
+    //TODO: Switch to Non-local pre-release
+    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-9-g2be82955:dev")
 }

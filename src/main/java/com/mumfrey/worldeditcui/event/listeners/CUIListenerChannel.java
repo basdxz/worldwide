@@ -3,7 +3,6 @@ package com.mumfrey.worldeditcui.event.listeners;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.CUIEventArgs;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
@@ -18,17 +17,20 @@ public final class CUIListenerChannel {
     private final WorldEditCUIController controller;
 
     public void onMessage(String message) {
-        val split = message.split("[|]");
-        val type = split[0];
-        val args = message.substring(type.length() + 1);
+        LOG.debug("Received CUI event: [{}]", message);
 
-        LOG.debug("Received CUI event from server: [{}]", message);
+        final CUIEventArgs args;
+        try {
+            args = new CUIEventArgs(message);
+        } catch (Exception e) {
+            LOG.error("Failed to parse arguments for CUI event: [{}]", message, e);
+            return;
+        }
 
         try {
-            val eventArgs = new CUIEventArgs(type, args.split("[|]"));
-            this.controller.getDispatcher().raiseEvent(eventArgs);
+            controller.getDispatcher().raiseEvent(args);
         } catch (Exception e) {
-            LOG.warn("Failed to process CUI event from server:", e);
+            LOG.error("Failed to raise CUI event: [{}]", message, e);
         }
     }
 }
