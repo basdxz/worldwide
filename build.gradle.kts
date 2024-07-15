@@ -31,4 +31,5 @@ repositories {
 dependencies {
 //    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0")
     implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-5-gb474c5f2:dev")
+    implementation("com.falsepattern:falsepatternlib-mc1.7.10:1.2.5-2-g023623d:dev")
 }

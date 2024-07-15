@@ -6,7 +6,8 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
 
-import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.opengl.GL11;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -33,24 +34,23 @@ public class Render2DBox
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
 		double off = 0.03;
 		for (LineInfo tempColour : this.colour.getColours())
 		{
 			tempColour.prepareRender();
 
-			tess.startDrawing(GL_LINES);
+			glBegin(GL_LINES);
 			tempColour.prepareColour();
 
 			for (PointRectangle point : this.points)
 			{
 				if (point != null)
 				{
-					tess.addVertex(point.getPoint().getX() + 0.5, this.min + off, point.getPoint().getY() + 0.5);
-					tess.addVertex(point.getPoint().getX() + 0.5, this.max + 1 + off, point.getPoint().getY() + 0.5);
+					glVertex3d(point.getPoint().getX() + 0.5, this.min + off, point.getPoint().getY() + 0.5);
+					glVertex3d(point.getPoint().getX() + 0.5, this.max + 1 + off, point.getPoint().getY() + 0.5);
 				}
 			}
-			tess.draw();
+			GL11.glEnd();
 		}
 	}
 }

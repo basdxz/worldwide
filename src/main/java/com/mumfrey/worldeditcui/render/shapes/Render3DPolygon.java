@@ -4,7 +4,6 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.util.Vector3;
 
-import net.minecraft.client.renderer.Tessellator;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -27,19 +26,17 @@ public class Render3DPolygon
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
-
 		for (LineInfo tempColour : this.colour.getColours())
 		{
 			tempColour.prepareRender();
 
-			tess.startDrawing(GL_LINE_LOOP);
+			glBegin(GL_LINE_LOOP);
 			tempColour.prepareColour();
 			for (Vector3 vertex : this.vertices)
 			{
-				tess.addVertex(vertex.getX(), vertex.getY(), vertex.getZ());
+				glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
 			}
-			tess.draw();
+			glEnd();
 		}
 	}
 }

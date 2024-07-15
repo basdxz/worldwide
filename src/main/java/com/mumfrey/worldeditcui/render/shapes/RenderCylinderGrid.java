@@ -4,7 +4,6 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 
-import net.minecraft.client.renderer.Tessellator;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -36,7 +35,6 @@ public class RenderCylinderGrid
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
 		for (LineInfo tempColour : this.colour.getColours())
 		{
 			tempColour.prepareRender();
@@ -51,29 +49,29 @@ public class RenderCylinderGrid
 			for (double tempX = negRadiusX; tempX <= posRadiusX; ++tempX)
 			{
 				double tempZ = this.radZ * Math.cos(Math.asin(tempX / this.radX));
-				tess.startDrawing(GL_LINE_LOOP);
+				glBegin(GL_LINE_LOOP);
 				tempColour.prepareColour();
 
-				tess.addVertex(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
-				tess.addVertex(this.centerX + tempX, tmaxY, this.centerZ - tempZ);
-				tess.addVertex(this.centerX + tempX, tminY, this.centerZ - tempZ);
-				tess.addVertex(this.centerX + tempX, tminY, this.centerZ + tempZ);
+				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
+				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ - tempZ);
+				glVertex3d(this.centerX + tempX, tminY, this.centerZ - tempZ);
+				glVertex3d(this.centerX + tempX, tminY, this.centerZ + tempZ);
 
-				tess.draw();
+				glEnd();
 			}
 
 			for (double tempZ = negRadiusZ; tempZ <= posRadiusZ; ++tempZ)
 			{
 				double tempX = this.radX * Math.sin(Math.acos(tempZ / this.radZ));
-				tess.startDrawing(GL_LINE_LOOP);
+				glBegin(GL_LINE_LOOP);
 				tempColour.prepareColour();
 
-				tess.addVertex(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
-				tess.addVertex(this.centerX - tempX, tmaxY, this.centerZ + tempZ);
-				tess.addVertex(this.centerX - tempX, tminY, this.centerZ + tempZ);
-				tess.addVertex(this.centerX + tempX, tminY, this.centerZ + tempZ);
+				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
+				glVertex3d(this.centerX - tempX, tmaxY, this.centerZ + tempZ);
+				glVertex3d(this.centerX - tempX, tminY, this.centerZ + tempZ);
+				glVertex3d(this.centerX + tempX, tminY, this.centerZ + tempZ);
 
-				tess.draw();
+				glEnd();
 			}
 		}
 	}

@@ -4,7 +4,6 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.util.Vector3;
 
-import net.minecraft.client.renderer.Tessellator;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -29,7 +28,6 @@ public class Render3DGrid
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
 		double x1 = this.first.getX();
 		double y1 = this.first.getY();
 		double z1 = this.first.getZ();
@@ -41,7 +39,7 @@ public class Render3DGrid
 		{
 			tempColour.prepareRender();
 
-			tess.startDrawing(GL_LINES);
+			glBegin(GL_LINES);
 			tempColour.prepareColour();
 
 			double x, y, z;
@@ -55,8 +53,8 @@ public class Render3DGrid
 			{
 				for (double yoff = 0; yoff + y <= y2; yoff += offsetSize)
 				{
-					tess.addVertex(x1, y + yoff, z);
-					tess.addVertex(x2, y + yoff, z);
+					glVertex3d(x1, y + yoff, z);
+					glVertex3d(x2, y + yoff, z);
 				}
 			}
 
@@ -66,8 +64,8 @@ public class Render3DGrid
 			{
 				for (double yoff = 0; yoff + y <= y2; yoff += offsetSize)
 				{
-					tess.addVertex(x1, y + yoff, z);
-					tess.addVertex(x2, y + yoff, z);
+					glVertex3d(x1, y + yoff, z);
+					glVertex3d(x2, y + yoff, z);
 				}
 			}
 
@@ -77,8 +75,8 @@ public class Render3DGrid
 			{
 				for (double yoff = 0; yoff + y <= y2; yoff += offsetSize)
 				{
-					tess.addVertex(x, y + yoff, z1);
-					tess.addVertex(x, y + yoff, z2);
+					glVertex3d(x, y + yoff, z1);
+					glVertex3d(x, y + yoff, z2);
 				}
 			}
 
@@ -88,8 +86,8 @@ public class Render3DGrid
 			{
 				for (double yoff = 0; yoff + y <= y2; yoff += offsetSize)
 				{
-					tess.addVertex(x, y + yoff, z1);
-					tess.addVertex(x, y + yoff, z2);
+					glVertex3d(x, y + yoff, z1);
+					glVertex3d(x, y + yoff, z2);
 				}
 			}
 
@@ -100,8 +98,8 @@ public class Render3DGrid
 			{
 				for (double xoff = 0; xoff + x <= x2; xoff += offsetSize)
 				{
-					tess.addVertex(x + xoff, y1, z);
-					tess.addVertex(x + xoff, y2, z);
+					glVertex3d(x + xoff, y1, z);
+					glVertex3d(x + xoff, y2, z);
 				}
 			}
 			// Zmax XY plane, x axis
@@ -110,8 +108,8 @@ public class Render3DGrid
 			{
 				for (double xoff = 0; xoff + x <= x2; xoff += offsetSize)
 				{
-					tess.addVertex(x + xoff, y1, z);
-					tess.addVertex(x + xoff, y2, z);
+					glVertex3d(x + xoff, y1, z);
+					glVertex3d(x + xoff, y2, z);
 				}
 			}
 			// Ymin XZ plane, x axis
@@ -120,8 +118,8 @@ public class Render3DGrid
 			{
 				for (double xoff = 0; xoff + x <= x2; xoff += offsetSize)
 				{
-					tess.addVertex(x + xoff, y, z1);
-					tess.addVertex(x + xoff, y, z2);
+					glVertex3d(x + xoff, y, z1);
+					glVertex3d(x + xoff, y, z2);
 				}
 			}
 			// Ymax XZ plane, x axis
@@ -130,8 +128,8 @@ public class Render3DGrid
 			{
 				for (double xoff = 0; xoff + x <= x2; xoff += offsetSize)
 				{
-					tess.addVertex(x + xoff, y, z1);
-					tess.addVertex(x + xoff, y, z2);
+					glVertex3d(x + xoff, y, z1);
+					glVertex3d(x + xoff, y, z2);
 				}
 			}
 
@@ -142,8 +140,8 @@ public class Render3DGrid
 			{
 				for (double zoff = 0; zoff + z <= z2; zoff += offsetSize)
 				{
-					tess.addVertex(x1, y, z + zoff);
-					tess.addVertex(x2, y, z + zoff);
+					glVertex3d(x1, y, z + zoff);
+					glVertex3d(x2, y, z + zoff);
 				}
 			}
 			// Ymax XZ plane, z axis
@@ -152,8 +150,8 @@ public class Render3DGrid
 			{
 				for (double zoff = 0; zoff + z <= z2; zoff += offsetSize)
 				{
-					tess.addVertex(x1, y, z + zoff);
-					tess.addVertex(x2, y, z + zoff);
+					glVertex3d(x1, y, z + zoff);
+					glVertex3d(x2, y, z + zoff);
 				}
 			}
 			// Xmin YZ plane, z axis
@@ -162,8 +160,8 @@ public class Render3DGrid
 			{
 				for (double zoff = 0; zoff + z <= z2; zoff += offsetSize)
 				{
-					tess.addVertex(x, y1, z + zoff);
-					tess.addVertex(x, y2, z + zoff);
+					glVertex3d(x, y1, z + zoff);
+					glVertex3d(x, y2, z + zoff);
 				}
 			}
 			// Xmax YZ plane, z axis
@@ -172,12 +170,12 @@ public class Render3DGrid
 			{
 				for (double zoff = 0; zoff + z <= z2; zoff += offsetSize)
 				{
-					tess.addVertex(x, y1, z + zoff);
-					tess.addVertex(x, y2, z + zoff);
+					glVertex3d(x, y1, z + zoff);
+					glVertex3d(x, y2, z + zoff);
 				}
 			}
 
-			tess.draw();
+			glEnd();
 		}
 	}
 }

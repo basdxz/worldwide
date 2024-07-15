@@ -43,6 +43,8 @@ public class WorldEditCUI
 	private KeyBinding keyBindToggleUI;
 	private KeyBinding keyBindClearSel;
 
+	private boolean handsShaken = false;
+
 	private boolean visible = true;
 
 	private CUIListenerWorldRender worldRenderListener;
@@ -62,12 +64,14 @@ public class WorldEditCUI
 		FMLCommonHandler.instance().bus().register(this);
 
 		WENetAPI.setupCUIHandler(MOD_NAME, (aBoolean, integer) -> {
-
+			handsShaken = aBoolean;
         }, this::onCustomPayload);
 	}
 
 	public void onCustomPayload(String payload)
 	{
+		this.handsShaken = true; // ??
+
 		try
 		{
 			this.channelListener.onMessage(payload);
@@ -81,7 +85,7 @@ public class WorldEditCUI
 		this.controller = new WorldEditCUIController();
 		this.controller.initialize();
 
-		this.worldRenderListener = new CUIListenerWorldRender(this.controller, Minecraft.getMinecraft());
+		this.worldRenderListener = new CUIListenerWorldRender(this.controller);
 		this.channelListener = new CUIListenerChannel(this.controller);
 
 		MinecraftForge.EVENT_BUS.register(this);
@@ -106,6 +110,7 @@ public class WorldEditCUI
 	 */
 	private void helo()
 	{
+		handsShaken = false;
 		WENetAPI.sendCUIHandshake(4);
 	}
 
@@ -160,7 +165,6 @@ public class WorldEditCUI
 				this.controller.getDebugger().debug("World change detected, sending new handshake");
 				this.controller.setSelection(new CuboidRegion(this.controller));
 				this.helo();
-				if (mc.thePlayer != null) mc.thePlayer.sendChatMessage("/we cui"); //Tricks WE to send the current selection
 			}
 		}
 	}
@@ -168,11 +172,11 @@ public class WorldEditCUI
 	@SubscribeEvent
 	public void onPostRenderEntities(RenderWorldLastEvent evt)
 	{
-		if (this.visible)
+		if (this.visible && this.handsShaken)
 		{
 			try
 			{
-				this.worldRenderListener.onRender(evt.partialTicks);
+				this.worldRenderListener.onRender();
 			}
 			catch (Exception ignored) {}
 		}

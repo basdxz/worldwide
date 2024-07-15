@@ -6,7 +6,6 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
 
-import net.minecraft.client.renderer.Tessellator;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -41,21 +40,20 @@ public class Render2DGrid
 
 	protected void drawPoly(double height)
 	{
-		Tessellator tess = Tessellator.instance;
 		for (LineInfo tempColour : this.colour.getColours())
 		{
 			tempColour.prepareRender();
 
-			tess.startDrawing(GL_LINE_LOOP);
+			glBegin(GL_LINE_LOOP);
 			tempColour.prepareColour();
 			for (PointRectangle point : this.points)
 			{
 				if (point != null)
 				{
-					tess.addVertex(point.getPoint().getX() + 0.5, height, point.getPoint().getY() + 0.5);
+					glVertex3d(point.getPoint().getX() + 0.5, height, point.getPoint().getY() + 0.5);
 				}
 			}
-			tess.draw();
+			glEnd();
 		}
 	}
 }

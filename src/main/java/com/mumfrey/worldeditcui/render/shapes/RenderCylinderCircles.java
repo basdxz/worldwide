@@ -4,7 +4,6 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 
-import net.minecraft.client.renderer.Tessellator;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -36,7 +35,6 @@ public class RenderCylinderCircles
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
 		for (LineInfo tempColour : this.colour.getColours())
 		{
 			tempColour.prepareRender();
@@ -44,7 +42,7 @@ public class RenderCylinderCircles
 			double twoPi = Math.PI * 2;
 			for (int yBlock = this.minY + 1; yBlock <= this.maxY; yBlock++)
 			{
-				tess.startDrawing(GL_LINE_LOOP);
+				glBegin(GL_LINE_LOOP);
 				tempColour.prepareColour();
 
 				for (int i = 0; i <= 75; i++)
@@ -53,9 +51,9 @@ public class RenderCylinderCircles
 					double tempX = this.radX * Math.cos(tempTheta);
 					double tempZ = this.radZ * Math.sin(tempTheta);
 
-					tess.addVertex(this.centerX + tempX, yBlock, this.centerZ + tempZ);
+					glVertex3d(this.centerX + tempX, yBlock, this.centerZ + tempZ);
 				}
-				tess.draw();
+				glEnd();
 			}
 		}
 	}

@@ -4,7 +4,8 @@ import com.mumfrey.worldeditcui.render.LineColour;
 import com.mumfrey.worldeditcui.render.LineInfo;
 import com.mumfrey.worldeditcui.util.Vector3;
 
-import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.opengl.GL11;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -29,7 +30,6 @@ public class Render3DBox
 
 	public void render()
 	{
-		Tessellator tess = Tessellator.instance;
 		double x1 = this.first.getX();
 		double y1 = this.first.getY();
 		double z1 = this.first.getZ();
@@ -42,40 +42,40 @@ public class Render3DBox
 			tempColour.prepareRender();
 
 			// Draw bottom face
-			tess.startDrawing(GL_LINE_LOOP);
+			glBegin(GL_LINE_LOOP);
 			tempColour.prepareColour();
-			tess.addVertex(x1, y1, z1);
-			tess.addVertex(x2, y1, z1);
-			tess.addVertex(x2, y1, z2);
-			tess.addVertex(x1, y1, z2);
-			tess.draw();
+			glVertex3d(x1, y1, z1);
+			glVertex3d(x2, y1, z1);
+			glVertex3d(x2, y1, z2);
+			glVertex3d(x1, y1, z2);
+			GL11.glEnd();
 
 			// Draw top face
-			tess.startDrawing(GL_LINE_LOOP);
+			glBegin(GL_LINE_LOOP);
 			tempColour.prepareColour();
-			tess.addVertex(x1, y2, z1);
-			tess.addVertex(x2, y2, z1);
-			tess.addVertex(x2, y2, z2);
-			tess.addVertex(x1, y2, z2);
-			tess.draw();
+			glVertex3d(x1, y2, z1);
+			glVertex3d(x2, y2, z1);
+			glVertex3d(x2, y2, z2);
+			glVertex3d(x1, y2, z2);
+			GL11.glEnd();
 
 			// Draw join top and bottom faces
-			tess.startDrawing(GL_LINES);
+			glBegin(GL_LINES);
 			tempColour.prepareColour();
 
-			tess.addVertex(x1, y1, z1);
-			tess.addVertex(x1, y2, z1);
+			glVertex3d(x1, y1, z1);
+			glVertex3d(x1, y2, z1);
 
-			tess.addVertex(x2, y1, z1);
-			tess.addVertex(x2, y2, z1);
+			glVertex3d(x2, y1, z1);
+			glVertex3d(x2, y2, z1);
 
-			tess.addVertex(x2, y1, z2);
-			tess.addVertex(x2, y2, z2);
+			glVertex3d(x2, y1, z2);
+			glVertex3d(x2, y2, z2);
 
-			tess.addVertex(x1, y1, z2);
-			tess.addVertex(x1, y2, z2);
+			glVertex3d(x1, y1, z2);
+			glVertex3d(x1, y2, z2);
 
-			tess.draw();
+			glEnd();
 		}
 	}
 }
