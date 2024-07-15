@@ -4,6 +4,9 @@ import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.CUIEvent;
 import com.mumfrey.worldeditcui.event.CUIEventType;
 import com.mumfrey.worldeditcui.render.region.BaseRegion;
+import lombok.val;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
 /**
  * Called when selection event is received
@@ -11,33 +14,24 @@ import com.mumfrey.worldeditcui.render.region.BaseRegion;
  * @author lahwran
  * @author yetanotherx
  */
-public class CUIEventSelection extends CUIEvent
-{
-	public CUIEventSelection(WorldEditCUIController controller, String[] args)
-	{
-		super(controller, args);
-	}
+public final class CUIEventSelection extends CUIEvent {
+    public CUIEventSelection(WorldEditCUIController controller, String... args) {
+        super(controller, args);
+    }
 
-	@Override
-	public CUIEventType getEventType()
-	{
-		return CUIEventType.SELECTION;
-	}
+    @Override
+    public CUIEventType getEventType() {
+        return CUIEventType.SELECTION;
+    }
 
-	@Override
-	public String raise()
-	{
-		String key = this.getString(0);
-		BaseRegion selection = this.controller.getSelectionProvider().createSelection(key);
-
-		if (selection != null)
-		{
-			selection.initialize();
-		}
-
-		this.controller.setSelection(selection);
-		this.controller.getDebugger().debug("Received selection event, initalizing new region instance.");
-
-		return null;
-	}
+    @Override
+    public String raise() {
+        val key = this.getString(0);
+        val selection = controller.getSelectionProvider().createSelection(key);
+        if (selection != null)
+            selection.initialize();
+        LOG.debug("Setting new selection: [{}]", selection);
+        controller.setSelection(selection);
+        return null;
+    }
 }

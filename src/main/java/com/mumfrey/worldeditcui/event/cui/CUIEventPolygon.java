@@ -3,6 +3,12 @@ package com.mumfrey.worldeditcui.event.cui;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.CUIEvent;
 import com.mumfrey.worldeditcui.event.CUIEventType;
+import lombok.val;
+import lombok.var;
+
+import java.util.Arrays;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
 /**
  * Called when polygon event is received
@@ -10,32 +16,29 @@ import com.mumfrey.worldeditcui.event.CUIEventType;
  * @author lahwran
  * @author yetanotherx
  */
-public class CUIEventPolygon extends CUIEvent
-{
+public final class CUIEventPolygon extends CUIEvent {
+    public CUIEventPolygon(WorldEditCUIController controller, String[] args) {
+        super(controller, args);
+    }
 
-	public CUIEventPolygon(WorldEditCUIController controller, String[] args)
-	{
-		super(controller, args);
-	}
+    @Override
+    public CUIEventType getEventType() {
+        return CUIEventType.POLYGON;
+    }
 
-	@Override
-	public CUIEventType getEventType()
-	{
-		return CUIEventType.POLYGON;
-	}
+    @Override
+    public String raise() {
+        val vertexIds = getVertexIds();
+        LOG.debug("Adding new polygon: {}", Arrays.toString(vertexIds));
+        getSelection().addPolygon(vertexIds);
+        return null;
+    }
 
-	@Override
-	public String raise()
-	{
-		final int[] vertexIds = new int[this.args.length];
-		for (int i = 0; i < this.args.length; ++i)
-		{
-			vertexIds[i] = this.getInt(i);
-		}
-
-		this.controller.getSelection().addPolygon(vertexIds);
-		//this.controller.getDebugger().debug("Setting point #" + id);
-
-		return null;
-	}
+    private int[] getVertexIds() {
+        val length = args.length;
+        val vertexIds = new int[length];
+        for (var i = 0; i < length; ++i)
+            vertexIds[i] = getInt(i);
+        return vertexIds;
+    }
 }

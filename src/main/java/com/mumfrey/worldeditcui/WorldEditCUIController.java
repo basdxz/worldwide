@@ -1,7 +1,6 @@
 package com.mumfrey.worldeditcui;
 
 import com.mumfrey.worldeditcui.config.CUIConfiguration;
-import com.mumfrey.worldeditcui.debug.CUIDebug;
 import com.mumfrey.worldeditcui.event.CUIEventDispatcher;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.CUISelectionProvider;
@@ -20,9 +19,7 @@ import com.mumfrey.worldeditcui.render.region.CuboidRegion;
  */
 public class WorldEditCUIController
 {
-	public static final int protocolVersion = 3;
 	private BaseRegion selection;
-	private CUIDebug debugger;
 	private CUIConfiguration configuration;
 	private CUIEventDispatcher dispatcher;
 	private CUISelectionProvider selectionProvider;
@@ -31,7 +28,6 @@ public class WorldEditCUIController
 	{
 		this.selection = new CuboidRegion(this);
 		this.configuration = CUIConfiguration.create();
-		this.debugger = new CUIDebug(this);
 		this.dispatcher = new CUIEventDispatcher(this);
 		this.selectionProvider = new CUISelectionProvider(this);
 
@@ -39,7 +35,6 @@ public class WorldEditCUIController
 		{
 			this.selection.initialize();
 			this.configuration.initialize();
-			this.debugger.initialize();
 			this.dispatcher.initialize();
 			this.selectionProvider.initialize();
 		}
@@ -63,11 +58,6 @@ public class WorldEditCUIController
 	public CUIConfiguration getConfiguration()
 	{
 		return this.configuration;
-	}
-
-	public CUIDebug getDebugger()
-	{
-		return this.debugger;
 	}
 
 	public BaseRegion getSelection()

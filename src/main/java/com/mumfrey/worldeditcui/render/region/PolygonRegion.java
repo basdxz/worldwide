@@ -1,13 +1,14 @@
 package com.mumfrey.worldeditcui.render.region;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineColour;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
 import com.mumfrey.worldeditcui.render.shapes.Render2DBox;
 import com.mumfrey.worldeditcui.render.shapes.Render2DGrid;
+import lombok.val;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main controller for a polygon-type region
@@ -15,66 +16,49 @@ import com.mumfrey.worldeditcui.render.shapes.Render2DGrid;
  * @author yetanotherx
  * @author lahwran
  */
-public class PolygonRegion extends BaseRegion
-{
+public final class PolygonRegion extends BaseRegion {
+    private final List<PointRectangle> points = new ArrayList<>();
 
-	protected List<PointRectangle> points = new ArrayList<PointRectangle>();
-	protected int min;
-	protected int max;
+    private int min;
+    private int max;
 
-	public PolygonRegion(WorldEditCUIController controller)
-	{
-		super(controller);
-	}
+    public PolygonRegion(WorldEditCUIController controller) {
+        super(controller);
+    }
 
-	@Override
-	public void render()
-	{
-		if (this.points == null)
-		{
-			return;
-		}
+    @Override
+    public void render() {
+        points.forEach(point -> point.render(min, max));
 
-		for (PointRectangle point : this.points)
-		{
-			point.render(this.min, this.max);
-		}
+        new Render2DBox(LineStyles.POLYBOX, points, min, max).render();
+        new Render2DGrid(LineStyles.POLYGRID, points, min, max).render();
+    }
 
-		new Render2DBox(LineColour.POLYBOX, this.points, this.min, this.max).render();
-		new Render2DGrid(LineColour.POLYGRID, this.points, this.min, this.max).render();
+    @Override
+    public BaseRegion setMinMax(int min, int max) {
+        this.min = min;
+        this.max = max;
+        return this;
+    }
 
-	}
+    @Override
+    public BaseRegion setPolygonPoint(int id, int x, int z) {
+        val point = new PointRectangle(x, z);
+        point.setColour(LineStyles.POLYPOINT);
 
-	@Override
-	public void setMinMax(int min, int max)
-	{
-		this.min = min;
-		this.max = max;
-	}
+        if (id < points.size()) {
+            points.set(id, point);
+        } else {
+            for (int i = 0; i < id - points.size(); i++) {
+                points.add(null);
+            }
+            points.add(point);
+        }
+        return this;
+    }
 
-	@Override
-	public void setPolygonPoint(int id, int x, int z)
-	{
-		PointRectangle point = new PointRectangle(x, z);
-		point.setColour(LineColour.POLYPOINT);
-
-		if (id < this.points.size())
-		{
-			this.points.set(id, point);
-		}
-		else
-		{
-			for (int i = 0; i < id - this.points.size(); i++)
-			{
-				this.points.add(null);
-			}
-			this.points.add(point);
-		}
-	}
-
-	@Override
-	public RegionType getType()
-	{
-		return RegionType.POLYGON;
-	}
+    @Override
+    public RegionType getType() {
+        return RegionType.POLYGON;
+    }
 }

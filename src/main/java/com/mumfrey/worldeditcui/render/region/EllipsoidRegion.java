@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.region;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineColour;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.RenderEllipsoid;
 import com.mumfrey.worldeditcui.util.Vector3;
@@ -12,50 +12,39 @@ import com.mumfrey.worldeditcui.util.Vector3;
  * @author yetanotherx
  * @author lahwran
  */
-public class EllipsoidRegion extends BaseRegion
-{
+public final class EllipsoidRegion extends BaseRegion {
+    private PointCube center;
+    private Vector3 radii;
 
-	protected PointCube center;
-	protected Vector3 radii;
+    public EllipsoidRegion(WorldEditCUIController controller) {
+        super(controller);
+    }
 
-	public EllipsoidRegion(WorldEditCUIController controller)
-	{
-		super(controller);
-	}
+    @Override
+    public RegionType getType() {
+        return RegionType.ELLIPSOID;
+    }
 
-	@Override
-	public void render()
-	{
-		if (this.center != null && this.radii != null)
-		{
-			this.center.render();
+    @Override
+    public void render() {
+        if (center != null && radii != null) {
+            center.render();
+            new RenderEllipsoid(LineStyles.ELLIPSOIDGRID, center, radii).render();
+        } else if (center != null) {
+            center.render();
+        }
+    }
 
-			new RenderEllipsoid(LineColour.ELLIPSOIDGRID, this.center, this.radii).render();
+    @Override
+    public BaseRegion setEllipsoidCenter(int x, int y, int z) {
+        center = new PointCube(x, y, z);
+        center.setColour(LineStyles.ELLIPSOIDCENTER);
+        return this;
+    }
 
-		}
-		else if (this.center != null)
-		{
-			this.center.render();
-		}
-	}
-
-	@Override
-	public void setEllipsoidCenter(int x, int y, int z)
-	{
-		this.center = new PointCube(x, y, z);
-		this.center.setColour(LineColour.ELLIPSOIDCENTER);
-	}
-
-	@Override
-	public void setEllipsoidRadii(double x, double y, double z)
-	{
-		this.radii = new Vector3(x, y, z);
-	}
-
-	@Override
-	public RegionType getType()
-	{
-		return RegionType.ELLIPSOID;
-	}
-
+    @Override
+    public BaseRegion setEllipsoidRadii(double x, double y, double z) {
+        radii = new Vector3(x, y, z);
+        return this;
+    }
 }

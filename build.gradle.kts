@@ -1,5 +1,5 @@
 plugins {
-    id("fpgradle-minecraft") version("0.4.2")
+    id("fpgradle-minecraft") version("0.5.0")
 }
 
 group = "com.mumfrey"
@@ -30,6 +30,6 @@ repositories {
 
 dependencies {
 //    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0")
-    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-5-gb474c5f2:dev")
-    implementation("com.falsepattern:falsepatternlib-mc1.7.10:1.2.5-2-g023623d:dev")
+    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-8-g4236472a:dev")
+    implementation("com.falsepattern:falsepatternlib-mc1.7.10:1.3.0-1-g3b83315:dev")
 }

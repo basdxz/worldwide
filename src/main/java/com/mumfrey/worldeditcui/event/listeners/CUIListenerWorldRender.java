@@ -1,60 +1,73 @@
 package com.mumfrey.worldeditcui.event.listeners;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import com.falsepattern.lib.util.RenderUtil;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-
 import com.mumfrey.worldeditcui.render.region.BaseRegion;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.val;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Listener for WorldRenderEvent
  *
  * @author lahwran
  * @author yetanotherx
- *
  */
-public class CUIListenerWorldRender
-{
-	private WorldEditCUIController controller;
+@RequiredArgsConstructor
+public final class CUIListenerWorldRender {
+    private final WorldEditCUIController controller;
 
-	public CUIListenerWorldRender(WorldEditCUIController controller)
-	{
-		this.controller = controller;
-	}
+    @Getter
+    @Setter
+    private boolean isVisible = true;
 
-	public void onRender()
-	{
-		BaseRegion selection = this.controller.getSelection();
-		if (selection == null)
-			return;
+    public void toggleVisible() {
+        isVisible = !isVisible;
+    }
 
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-		RenderUtil.bindEmptyTexture();
+    public void onRender() {
+        if (!isVisible)
+            return;
 
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
-		glPushMatrix();
+        val selection = controller.getSelection();
+        if (selection == null)
+            return;
 
-		glDisable(GL11.GL_TEXTURE_2D);
-		glEnable(GL11.GL_BLEND);
-		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL11.GL_LIGHTING);
+        try {
+            onRenderImpl(selection);
+        } catch (Exception e) {
+            LOG.error("Failed to render selection {}", selection, e);
+        }
+    }
 
-		RenderUtil.setGLTranslationRelativeToPlayer();
+    private static void onRenderImpl(BaseRegion selection) {
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        RenderUtil.bindEmptyTexture();
 
-		try
-		{
-			glColor3f(1.0f, 1.0f, 1.0f);
-			selection.render();
-		} catch (Exception ignored) {}
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glPushMatrix();
 
-		glPopMatrix();
-		glPopAttrib();
+        glDisable(GL11.GL_TEXTURE_2D);
+        glEnable(GL11.GL_BLEND);
+        glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL11.GL_LIGHTING);
 
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,
-											  OpenGlHelper.lastBrightnessX,
-											  OpenGlHelper.lastBrightnessY);
-	}
+        RenderUtil.setGLTranslationRelativeToPlayer();
+
+        glColor4f(1F, 1F, 1F, 1F);
+        selection.render();
+
+        glPopMatrix();
+        glPopAttrib();
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,
+                                              OpenGlHelper.lastBrightnessX,
+                                              OpenGlHelper.lastBrightnessY);
+    }
 }

@@ -8,8 +8,6 @@ import com.mumfrey.worldeditcui.exceptions.InitializationException;
  *
  * @author yetanotherx
  */
-public interface InitializationFactory
-{
-
-	public void initialize() throws InitializationException;
+public interface InitializationFactory {
+    void initialize() throws InitializationException;
 }

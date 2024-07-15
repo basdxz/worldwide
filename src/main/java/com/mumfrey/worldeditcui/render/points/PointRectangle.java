@@ -1,8 +1,10 @@
 package com.mumfrey.worldeditcui.render.points;
 
-import com.mumfrey.worldeditcui.render.LineColour;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.shapes.Render3DBox;
 import com.mumfrey.worldeditcui.util.Vector2;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Stores data about a prism surrounding two
@@ -13,48 +15,26 @@ import com.mumfrey.worldeditcui.util.Vector2;
  * @author yetanotherx
  * @author lahwran
  */
-public class PointRectangle
-{
 
-	protected Vector2 point;
-	protected LineColour colour = LineColour.POLYPOINT;
+@Setter
+@Getter
+public final class PointRectangle {
+    private Vector2 point;
+    private LineStyles colour = LineStyles.POLYPOINT;
 
-	public PointRectangle(Vector2 point)
-	{
-		this.point = point;
-	}
+    public PointRectangle(Vector2 point) {
+        this.point = point;
+    }
 
-	public PointRectangle(int x, int z)
-	{
-		this.point = new Vector2(x, z);
-	}
+    public PointRectangle(int x, int z) {
+        this.point = new Vector2(x, z);
+    }
 
-	public void render(int min, int max)
-	{
-		float off = 0.03f;
-		Vector2 minVec = new Vector2(off, off);
-		Vector2 maxVec = new Vector2(off + 1, off + 1);
+    public void render(int min, int max) {
+        float off = 0.03f;
+        Vector2 minVec = new Vector2(off, off);
+        Vector2 maxVec = new Vector2(off + 1, off + 1);
 
-		new Render3DBox(this.colour, this.point.subtract(minVec).toVector3(min - off), this.point.add(maxVec).toVector3(max + 1 + off)).render();
-	}
-
-	public Vector2 getPoint()
-	{
-		return this.point;
-	}
-
-	public void setPoint(Vector2 point)
-	{
-		this.point = point;
-	}
-
-	public LineColour getColour()
-	{
-		return this.colour;
-	}
-
-	public void setColour(LineColour colour)
-	{
-		this.colour = colour;
-	}
+        new Render3DBox(colour, point.subtract(minVec).toVector3(min - off), point.add(maxVec).toVector3(max + 1 + off)).render();
+    }
 }

@@ -3,6 +3,9 @@ package com.mumfrey.worldeditcui.event.cui;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.CUIEvent;
 import com.mumfrey.worldeditcui.event.CUIEventType;
+import lombok.val;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
 /**
  * Called when ellipsoid event is received
@@ -10,43 +13,42 @@ import com.mumfrey.worldeditcui.event.CUIEventType;
  * @author lahwran
  * @author yetanotherx
  */
-public class CUIEventEllipsoid extends CUIEvent
-{
+public final class CUIEventEllipsoid extends CUIEvent {
+    public CUIEventEllipsoid(WorldEditCUIController controller, String... args) {
+        super(controller, args);
+    }
 
-	public CUIEventEllipsoid(WorldEditCUIController controller, String[] args)
-	{
-		super(controller, args);
-	}
+    @Override
+    public CUIEventType getEventType() {
+        return CUIEventType.ELLIPSOID;
+    }
 
-	@Override
-	public CUIEventType getEventType()
-	{
-		return CUIEventType.ELLIPSOID;
-	}
+    @Override
+    public String raise() {
+        val id = this.getInt(0);
+        if (id == 0) {
+            setCenter();
+        } else if (id == 1) {
+            setRadii();
+        } else {
+            throw new IllegalStateException("Unknown ID: [" + id + "]");
+        }
+        return null;
+    }
 
-	@Override
-	public String raise()
-	{
+    private void setCenter() {
+        val x = getInt(1);
+        val y = getInt(2);
+        val z = getInt(3);
+        LOG.debug("Selecting ellipsoid center: [x={}, y={}, z={}]", x, y, z);
+        getSelection().setEllipsoidCenter(x, y, z);
+    }
 
-		int id = this.getInt(0);
-
-		if (id == 0)
-		{
-			int x = this.getInt(1);
-			int y = this.getInt(2);
-			int z = this.getInt(3);
-			this.controller.getSelection().setEllipsoidCenter(x, y, z);
-		}
-		else if (id == 1)
-		{
-			double x = this.getDouble(1);
-			double y = this.getDouble(2);
-			double z = this.getDouble(3);
-			this.controller.getSelection().setEllipsoidRadii(x, y, z);
-		}
-
-		this.controller.getDebugger().debug("Setting center/radius");
-
-		return null;
-	}
+    private void setRadii() {
+        val radiusX = getDouble(1);
+        val radiusY = getDouble(2);
+        val radiusZ = getDouble(3);
+        LOG.debug("Selecting ellipsoid radii: [radiusX={}, radiusY={}, radiusZ={}]", radiusX, radiusY, radiusZ);
+        getSelection().setEllipsoidRadii(radiusX, radiusY, radiusZ);
+    }
 }

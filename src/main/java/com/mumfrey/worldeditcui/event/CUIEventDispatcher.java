@@ -1,73 +1,72 @@
 package com.mumfrey.worldeditcui.event;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mumfrey.worldeditcui.InitializationFactory;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
+
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
 /**
- *
  * @author Adam Mummery-Smith
  */
-public class CUIEventDispatcher implements InitializationFactory
-{
-	private WorldEditCUIController controller;
+@RequiredArgsConstructor
+public final class CUIEventDispatcher implements InitializationFactory {
+    private final WorldEditCUIController controller;
 
-	private Map<String, Constructor<? extends CUIEvent>> eventConstructors = new HashMap<String, Constructor<? extends CUIEvent>>();
+    private final Map<String, Constructor<? extends CUIEvent>> eventConstructors = new HashMap<>();
 
-	public CUIEventDispatcher(WorldEditCUIController controller)
-	{
-		this.controller = controller;
-	}
+    @Override
+    public void initialize() throws InitializationException {
+        val types = CUIEventType.values();
+        for (val type : types) {
+            val clazz = type.getEventClass();
+            val clazzName = clazz.getName();
+            val key = type.getKey();
+            try {
+                val ctor = clazz.getDeclaredConstructor(WorldEditCUIController.class, String[].class);
+                eventConstructors.put(key, ctor);
+                LOG.debug("Registered event type: [{}] with class: [{}]", key, clazzName);
+            } catch (Exception e) {
+                LOG.error("Failed to find constructor for event type: [{}] with class: [{}]", key, clazz.getName(), e);
+            }
+        }
+    }
 
-	@Override
-	public void initialize() throws InitializationException
-	{
-		for (CUIEventType eventType : CUIEventType.values())
-		{
-			try
-			{
-				Class<? extends CUIEvent> eventClass = eventType.getEventClass();
-				Constructor<? extends CUIEvent> ctor = eventClass.getDeclaredConstructor(WorldEditCUIController.class, String[].class);
+    public void raiseEvent(CUIEventArgs args) {
+        val type = args.getType();
 
-				this.eventConstructors.put(eventType.getKey(), ctor);
-			}
-			catch (NoSuchMethodException ex)
-			{
-				this.controller.getDebugger().debug("Error getting constructor for event " + eventType.getKey());
-			}
-		}
-	}
+        val ctor = this.eventConstructors.get(type);
+        if (ctor == null) {
+            LOG.warn("Unknown event type: [{}]", type);
+            return;
+        }
 
-	public void raiseEvent(CUIEventArgs eventArgs)
-	{
-		try
-		{
-			Constructor<? extends CUIEvent> eventCtor = this.eventConstructors.get(eventArgs.getType());
-			CUIEvent event = eventCtor.newInstance(this.controller, eventArgs.getParams());
-			event.prepare();
+        val params = args.getParams();
+        final CUIEvent evt;
+        try {
+            evt = ctor.newInstance(this.controller, params);
+            evt.prepare();
+        } catch (Exception e) {
+            LOG.error("Failed to create new event: [{}] with args: [{}]", type, Arrays.toString(params), e);
+            return;
+        }
 
-			String response = event.raise();
-			if (response != null)
-			{
-				this.handleEventResponse(response);
-			}
-		}
-		catch (NullPointerException ex)
-		{
-			this.controller.getDebugger().debug("No such event " + eventArgs.getType());
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-			this.controller.getDebugger().debug("Error raising event " + eventArgs.getType() + ": " + ex.getClass().getSimpleName() + " " + ex.getMessage());
-		}
-	}
+        try {
+            val response = evt.raise();
+            if (response != null)
+                handleEventResponse(response);
+        } catch (Exception e) {
+            LOG.error("Failed to raise event: [{}] with args: [{}]", type, Arrays.toString(params), e);
+        }
+    }
 
-	private void handleEventResponse(String response)
-	{
-	}
+    private void handleEventResponse(String response) {
+    }
 }

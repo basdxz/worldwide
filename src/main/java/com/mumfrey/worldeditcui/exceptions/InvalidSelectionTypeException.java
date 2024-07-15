@@ -1,11 +1,9 @@
 package com.mumfrey.worldeditcui.exceptions;
 
-public class InvalidSelectionTypeException extends RuntimeException
-{
-	private static final long serialVersionUID = 1L;
+import com.mumfrey.worldeditcui.render.region.RegionType;
 
-	public InvalidSelectionTypeException(String regionType, String eventName)
-	{
-		super(String.format("Selection event %s is not supported for selection type %s", eventName, regionType));
-	}
+public final class InvalidSelectionTypeException extends RuntimeException {
+    public InvalidSelectionTypeException(RegionType type, String eventName) {
+        super(String.format("Selection event %s is not supported for selection type %s", eventName, type));
+    }
 }

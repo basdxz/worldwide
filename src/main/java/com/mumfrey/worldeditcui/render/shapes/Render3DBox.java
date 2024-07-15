@@ -1,9 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineColour;
-import com.mumfrey.worldeditcui.render.LineInfo;
+import com.mumfrey.worldeditcui.render.LineStyle;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.util.Vector3;
-
+import lombok.AllArgsConstructor;
+import lombok.val;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -14,68 +15,58 @@ import static org.lwjgl.opengl.GL11.*;
  * @author yetanotherx
  * @author lahwran
  */
-public class Render3DBox
-{
+@AllArgsConstructor
+public final class Render3DBox {
+    private final LineStyles lineStyles;
+    private final Vector3 first;
+    private final Vector3 second;
 
-	protected LineColour colour;
-	protected Vector3 first;
-	protected Vector3 second;
+    public void render() {
+        val x1 = this.first.getX();
+        val y1 = this.first.getY();
+        val z1 = this.first.getZ();
+        val x2 = this.second.getX();
+        val y2 = this.second.getY();
+        val z2 = this.second.getZ();
 
-	public Render3DBox(LineColour colour, Vector3 first, Vector3 second)
-	{
-		this.colour = colour;
-		this.first = first;
-		this.second = second;
-	}
+        for (val lineStyle : lineStyles) {
+            lineStyle.prepareRender();
 
-	public void render()
-	{
-		double x1 = this.first.getX();
-		double y1 = this.first.getY();
-		double z1 = this.first.getZ();
-		double x2 = this.second.getX();
-		double y2 = this.second.getY();
-		double z2 = this.second.getZ();
+            // Draw bottom face
+            glBegin(GL_LINE_LOOP);
+            lineStyle.prepareColour();
+            glVertex3d(x1, y1, z1);
+            glVertex3d(x2, y1, z1);
+            glVertex3d(x2, y1, z2);
+            glVertex3d(x1, y1, z2);
+            GL11.glEnd();
 
-		for (LineInfo tempColour : this.colour.getColours())
-		{
-			tempColour.prepareRender();
+            // Draw top face
+            glBegin(GL_LINE_LOOP);
+            lineStyle.prepareColour();
+            glVertex3d(x1, y2, z1);
+            glVertex3d(x2, y2, z1);
+            glVertex3d(x2, y2, z2);
+            glVertex3d(x1, y2, z2);
+            GL11.glEnd();
 
-			// Draw bottom face
-			glBegin(GL_LINE_LOOP);
-			tempColour.prepareColour();
-			glVertex3d(x1, y1, z1);
-			glVertex3d(x2, y1, z1);
-			glVertex3d(x2, y1, z2);
-			glVertex3d(x1, y1, z2);
-			GL11.glEnd();
+            // Draw join top and bottom faces
+            glBegin(GL_LINES);
+            lineStyle.prepareColour();
 
-			// Draw top face
-			glBegin(GL_LINE_LOOP);
-			tempColour.prepareColour();
-			glVertex3d(x1, y2, z1);
-			glVertex3d(x2, y2, z1);
-			glVertex3d(x2, y2, z2);
-			glVertex3d(x1, y2, z2);
-			GL11.glEnd();
+            glVertex3d(x1, y1, z1);
+            glVertex3d(x1, y2, z1);
 
-			// Draw join top and bottom faces
-			glBegin(GL_LINES);
-			tempColour.prepareColour();
+            glVertex3d(x2, y1, z1);
+            glVertex3d(x2, y2, z1);
 
-			glVertex3d(x1, y1, z1);
-			glVertex3d(x1, y2, z1);
+            glVertex3d(x2, y1, z2);
+            glVertex3d(x2, y2, z2);
 
-			glVertex3d(x2, y1, z1);
-			glVertex3d(x2, y2, z1);
+            glVertex3d(x1, y1, z2);
+            glVertex3d(x1, y2, z2);
 
-			glVertex3d(x2, y1, z2);
-			glVertex3d(x2, y2, z2);
-
-			glVertex3d(x1, y1, z2);
-			glVertex3d(x1, y2, z2);
-
-			glEnd();
-		}
-	}
+            glEnd();
+        }
+    }
 }

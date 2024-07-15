@@ -1,8 +1,9 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineColour;
-import com.mumfrey.worldeditcui.render.LineInfo;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
+import lombok.val;
+import lombok.var;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -11,68 +12,64 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author yetanotherx
  */
-public class RenderCylinderGrid
-{
+public final class RenderCylinderGrid {
+    private final LineStyles lineStyles;
+    private final double radX;
+    private final double radZ;
+    private final int minY;
+    private final int maxY;
 
-	protected LineColour colour;
-	protected double radX = 0;
-	protected double radZ = 0;
-	protected int minY;
-	protected int maxY;
-	protected double centerX;
-	protected double centerZ;
+    private final double centerX;
+    private final double centerZ;
 
-	public RenderCylinderGrid(LineColour colour, PointCube center, double radX, double radZ, int minY, int maxY)
-	{
-		this.colour = colour;
-		this.radX = radX;
-		this.radZ = radZ;
-		this.minY = minY;
-		this.maxY = maxY;
-		this.centerX = center.getPoint().getX() + 0.5;
-		this.centerZ = center.getPoint().getZ() + 0.5;
-	}
+    public RenderCylinderGrid(LineStyles lineStyles, PointCube center, double radX, double radZ, int minY, int maxY) {
+        this.lineStyles = lineStyles;
+        this.radX = radX;
+        this.radZ = radZ;
+        this.minY = minY;
+        this.maxY = maxY;
+        
+		val centerPoint = center.getPoint();
+        this.centerX = centerPoint.getX() + 0.5F;
+        this.centerZ = centerPoint.getZ() + 0.5F;
+    }
 
-	public void render()
-	{
-		for (LineInfo tempColour : this.colour.getColours())
-		{
-			tempColour.prepareRender();
+    public void render() {
+        for (val lineStyle : lineStyles) {
+            lineStyle.prepareRender();
 
-			int tmaxY = this.maxY + 1;
-			int tminY = this.minY;
-			int posRadiusX = (int)Math.ceil(this.radX);
-			int negRadiusX = (int)-Math.ceil(this.radX);
-			int posRadiusZ = (int)Math.ceil(this.radZ);
-			int negRadiusZ = (int)-Math.ceil(this.radZ);
+            val tmaxY = maxY + 1;
+            val tminY = minY;
+            val posRadiusX = (int) Math.ceil(radX);
+            val negRadiusX = (int) -Math.ceil(radX);
+            val posRadiusZ = (int) Math.ceil(radZ);
+            val negRadiusZ = (int) -Math.ceil(radZ);
 
-			for (double tempX = negRadiusX; tempX <= posRadiusX; ++tempX)
-			{
-				double tempZ = this.radZ * Math.cos(Math.asin(tempX / this.radX));
-				glBegin(GL_LINE_LOOP);
-				tempColour.prepareColour();
+            for (var tempX = negRadiusX; tempX <= posRadiusX; ++tempX) {
+                val tempZ = radZ * Math.cos(Math.asin(tempX / radX));
+                glBegin(GL_LINE_LOOP);
+                lineStyle.prepareColour();
 
-				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
-				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ - tempZ);
-				glVertex3d(this.centerX + tempX, tminY, this.centerZ - tempZ);
-				glVertex3d(this.centerX + tempX, tminY, this.centerZ + tempZ);
+                glVertex3d(centerX + tempX, tmaxY, centerZ + tempZ);
+                glVertex3d(centerX + tempX, tmaxY, centerZ - tempZ);
+                glVertex3d(centerX + tempX, tminY, centerZ - tempZ);
+                glVertex3d(centerX + tempX, tminY, centerZ + tempZ);
 
-				glEnd();
-			}
+                glEnd();
+            }
 
-			for (double tempZ = negRadiusZ; tempZ <= posRadiusZ; ++tempZ)
-			{
-				double tempX = this.radX * Math.sin(Math.acos(tempZ / this.radZ));
-				glBegin(GL_LINE_LOOP);
-				tempColour.prepareColour();
+            for (var tempZ = negRadiusZ; tempZ <= posRadiusZ; ++tempZ) {
+                val tempX = radX * Math.sin(Math.acos(tempZ / radZ));
+                glBegin(GL_LINE_LOOP);
+                lineStyle.prepareColour();
 
-				glVertex3d(this.centerX + tempX, tmaxY, this.centerZ + tempZ);
-				glVertex3d(this.centerX - tempX, tmaxY, this.centerZ + tempZ);
-				glVertex3d(this.centerX - tempX, tminY, this.centerZ + tempZ);
-				glVertex3d(this.centerX + tempX, tminY, this.centerZ + tempZ);
+                glVertex3d(centerX + tempX, tmaxY, centerZ + tempZ);
+                glVertex3d(centerX - tempX, tmaxY, centerZ + tempZ);
+                glVertex3d(centerX - tempX, tminY, centerZ + tempZ);
+                glVertex3d(centerX + tempX, tminY, centerZ + tempZ);
 
-				glEnd();
-			}
-		}
-	}
+                glEnd();
+            }
+        }
+    }
 }

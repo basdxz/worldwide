@@ -1,10 +1,12 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import java.util.List;
-
-import com.mumfrey.worldeditcui.render.LineColour;
-import com.mumfrey.worldeditcui.render.LineInfo;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
+import lombok.AllArgsConstructor;
+import lombok.val;
+import lombok.var;
+
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,46 +16,35 @@ import static org.lwjgl.opengl.GL11.*;
  * @author yetanotherx
  * @author lahwran
  */
-public class Render2DGrid
-{
-	protected LineColour colour;
-	protected List<PointRectangle> points;
-	protected int min;
-	protected int max;
 
-	public Render2DGrid(LineColour colour, List<PointRectangle> points, int min, int max)
-	{
-		this.colour = colour;
-		this.points = points;
-		this.min = min;
-		this.max = max;
-	}
+@AllArgsConstructor
+public final class Render2DGrid {
+    private final LineStyles lineStyles;
+    private final List<PointRectangle> points;
+    private final int min;
+    private final int max;
 
-	public void render()
-	{
-		double off = 0.03;
-		for (double height = this.min; height <= this.max + 1; height++)
-		{
-			this.drawPoly(height + off);
-		}
-	}
+    public void render() {
+        val eps = 0.03D;
+        for (var height = min; height <= max + 1D; height++)
+            drawPoly(height + eps);
+    }
 
-	protected void drawPoly(double height)
-	{
-		for (LineInfo tempColour : this.colour.getColours())
-		{
-			tempColour.prepareRender();
+    private void drawPoly(double height) {
+        for (val lineStyle : lineStyles) {
+            lineStyle.prepareRender();
 
-			glBegin(GL_LINE_LOOP);
-			tempColour.prepareColour();
-			for (PointRectangle point : this.points)
-			{
-				if (point != null)
-				{
-					glVertex3d(point.getPoint().getX() + 0.5, height, point.getPoint().getY() + 0.5);
-				}
-			}
-			glEnd();
-		}
-	}
+            glBegin(GL_LINE_LOOP);
+            lineStyle.prepareColour();
+            for (val rectPoint : this.points) {
+                if (rectPoint != null) {
+                    val point = rectPoint.getPoint();
+                    glVertex3d(point.getX() + 0.5D,
+                               height,
+                               point.getY() + 0.5D);
+                }
+            }
+            glEnd();
+        }
+    }
 }

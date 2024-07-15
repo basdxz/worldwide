@@ -1,78 +1,71 @@
 package com.mumfrey.worldeditcui.render.region;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineColour;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.RenderCylinderBox;
 import com.mumfrey.worldeditcui.render.shapes.RenderCylinderCircles;
 import com.mumfrey.worldeditcui.render.shapes.RenderCylinderGrid;
+import lombok.var;
 
 /**
  * Main controller for a cylinder-type region
  *
  * @author yetanotherx
  */
-public class CylinderRegion extends BaseRegion
-{
+public final class CylinderRegion extends BaseRegion {
+    private PointCube center;
+    private double radX = 0;
+    private double radZ = 0;
+    private int minY = 0;
+    private int maxY = 0;
 
-	protected PointCube center;
-	protected double radX = 0;
-	protected double radZ = 0;
-	protected int minY = 0;
-	protected int maxY = 0;
-
-	public CylinderRegion(WorldEditCUIController controller)
-	{
-		super(controller);
-	}
-
+    public CylinderRegion(WorldEditCUIController controller) {
+        super(controller);
+    }
+	
 	@Override
-	public void render()
-	{
-		if (this.center != null)
-		{
-			this.center.render();
-
-			int tMin = this.minY;
-			int tMax = this.maxY;
-
-			if (this.minY == 0 || this.maxY == 0)
-			{
-				tMin = (int)this.center.getPoint().getY();
-				tMax = (int)this.center.getPoint().getY();
-			}
-
-			new RenderCylinderCircles(LineColour.CYLINDERGRID, this.center, this.radX, this.radZ, tMin, tMax).render();
-			new RenderCylinderGrid(LineColour.CYLINDERGRID, this.center, this.radX, this.radZ, tMin, tMax).render();
-			new RenderCylinderBox(LineColour.CYLINDERBOX, this.center, this.radX, this.radZ, tMin, tMax).render();
-
-		}
-	}
-
-	@Override
-	public void setCylinderCenter(int x, int y, int z)
-	{
-		this.center = new PointCube(x, y, z);
-		this.center.setColour(LineColour.CYLINDERCENTER);
-	}
-
-	@Override
-	public void setCylinderRadius(double x, double z)
-	{
-		this.radX = x;
-		this.radZ = z;
-	}
-
-	@Override
-	public void setMinMax(int min, int max)
-	{
-		this.minY = min;
-		this.maxY = max;
-	}
-
-	@Override
-	public RegionType getType()
-	{
+	public RegionType getType() {
 		return RegionType.CYLINDER;
 	}
+	
+    @Override
+    public void render() {
+        if (center == null)
+            return;
+
+        center.render();
+
+        var tMin = minY;
+        var tMax = maxY;
+        if (minY == 0 || maxY == 0) {
+            tMin = (int) center.getPoint().getY();
+            tMax = (int) center.getPoint().getY();
+        }
+
+        new RenderCylinderCircles(LineStyles.CYLINDERGRID, center, radX, radZ, tMin, tMax).render();
+        new RenderCylinderGrid(LineStyles.CYLINDERGRID, center, radX, radZ, tMin, tMax).render();
+        new RenderCylinderBox(LineStyles.CYLINDERBOX, center, radX, radZ, tMin, tMax).render();
+    }
+
+    @Override
+    public BaseRegion setCylinderCenter(int x, int y, int z) {
+        center = new PointCube(x, y, z);
+        center.setColour(LineStyles.CYLINDERCENTER);
+        return this;
+    }
+
+    @Override
+    public BaseRegion setCylinderRadius(double x, double z) {
+        this.radX = x;
+        this.radZ = z;
+        return this;
+    }
+
+    @Override
+    public BaseRegion setMinMax(int min, int max) {
+        this.minY = min;
+        this.maxY = max;
+        return this;
+    }
 }

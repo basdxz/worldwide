@@ -1,9 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineColour;
-import com.mumfrey.worldeditcui.render.LineInfo;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
+import lombok.val;
 
+import static com.mumfrey.worldeditcui.render.RenderUtils.PI_2;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -11,50 +12,45 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author yetanotherx
  */
-public class RenderCylinderCircles
-{
+public final class RenderCylinderCircles {
+    private final LineStyles lineStyles;
+    private final double radX;
+    private final double radZ;
+    private final int minY;
+    private final int maxY;
 
-	protected LineColour colour;
-	protected double radX = 0;
-	protected double radZ = 0;
-	protected int minY;
-	protected int maxY;
-	protected double centerX;
-	protected double centerZ;
+    private final double centerX;
+    private final double centerZ;
 
-	public RenderCylinderCircles(LineColour colour, PointCube center, double radX, double radZ, int minY, int maxY)
-	{
-		this.colour = colour;
-		this.radX = radX;
-		this.radZ = radZ;
-		this.minY = minY;
-		this.maxY = maxY;
-		this.centerX = center.getPoint().getX() + 0.5;
-		this.centerZ = center.getPoint().getZ() + 0.5;
-	}
+    public RenderCylinderCircles(LineStyles lineStyles, PointCube center, double radX, double radZ, int minY, int maxY) {
+        this.lineStyles = lineStyles;
+        this.radX = radX;
+        this.radZ = radZ;
+        this.minY = minY;
+        this.maxY = maxY;
 
-	public void render()
-	{
-		for (LineInfo tempColour : this.colour.getColours())
-		{
-			tempColour.prepareRender();
+        val centerPoint = center.getPoint();
+        this.centerX = centerPoint.getX() + 0.5D;
+        this.centerZ = centerPoint.getZ() + 0.5D;
+    }
 
-			double twoPi = Math.PI * 2;
-			for (int yBlock = this.minY + 1; yBlock <= this.maxY; yBlock++)
-			{
-				glBegin(GL_LINE_LOOP);
-				tempColour.prepareColour();
+    public void render() {
+        for (val lineStyle : lineStyles) {
+            lineStyle.prepareRender();
 
-				for (int i = 0; i <= 75; i++)
-				{
-					double tempTheta = i * twoPi / 75;
-					double tempX = this.radX * Math.cos(tempTheta);
-					double tempZ = this.radZ * Math.sin(tempTheta);
+            for (int yBlock = this.minY + 1; yBlock <= this.maxY; yBlock++) {
+                glBegin(GL_LINE_LOOP);
+                lineStyle.prepareColour();
 
-					glVertex3d(this.centerX + tempX, yBlock, this.centerZ + tempZ);
-				}
-				glEnd();
-			}
-		}
-	}
+                for (int i = 0; i <= 75; i++) {
+                    double tempTheta = i * PI_2 / 75;
+                    double tempX = this.radX * Math.cos(tempTheta);
+                    double tempZ = this.radZ * Math.sin(tempTheta);
+
+                    glVertex3d(this.centerX + tempX, yBlock, this.centerZ + tempZ);
+                }
+                glEnd();
+            }
+        }
+    }
 }

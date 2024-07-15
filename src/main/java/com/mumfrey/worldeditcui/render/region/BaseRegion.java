@@ -12,62 +12,49 @@ import com.mumfrey.worldeditcui.exceptions.InvalidSelectionTypeException;
  * @author yetanotherx
  * @author lahwran
  */
-public abstract class BaseRegion implements InitializationFactory
-{
+public abstract class BaseRegion implements InitializationFactory {
+    protected WorldEditCUIController controller;
 
-	protected WorldEditCUIController controller;
+    public BaseRegion(WorldEditCUIController controller) {
+        this.controller = controller;
+    }
 
-	public BaseRegion(WorldEditCUIController controller)
-	{
-		this.controller = controller;
-	}
+    @Override
+    public void initialize() {}
 
-	@Override
-	public void initialize()
-	{
-	}
+    public abstract RegionType getType();
 
-	public abstract void render();
+    public abstract void render();
 
-	public void setCuboidPoint(int id, double x, double y, double z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setCuboidPoint");
-	}
+    public BaseRegion setCuboidPoint(int id, double x, double y, double z) {
+        throw new InvalidSelectionTypeException(getType(), "setCuboidPoint");
+    }
 
-	public void setPolygonPoint(int id, int x, int z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setPolygonPoint");
-	}
+    public BaseRegion setPolygonPoint(int id, int x, int z) {
+        throw new InvalidSelectionTypeException(getType(), "setPolygonPoint");
+    }
 
-	public void setEllipsoidCenter(int x, int y, int z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setEllipsoidCenter");
-	}
+    public BaseRegion setEllipsoidCenter(int x, int y, int z) {
+        throw new InvalidSelectionTypeException(getType(), "setEllipsoidCenter");
+    }
 
-	public void setEllipsoidRadii(double x, double y, double z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setEllipsoidRadii");
-	}
+    public BaseRegion setEllipsoidRadii(double x, double y, double z) {
+        throw new InvalidSelectionTypeException(getType(), "setEllipsoidRadii");
+    }
 
-	public void setMinMax(int min, int max)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setMinMax");
-	}
+    public BaseRegion setMinMax(int min, int max) {
+        throw new InvalidSelectionTypeException(getType(), "setMinMax");
+    }
 
-	public void setCylinderCenter(int x, int y, int z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setCylinderCenter");
-	}
+    public BaseRegion setCylinderCenter(int x, int y, int z) {
+        throw new InvalidSelectionTypeException(getType(), "setCylinderCenter");
+    }
 
-	public void setCylinderRadius(double x, double z)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "setCylinderRadius");
-	}
+    public BaseRegion setCylinderRadius(double x, double z) {
+        throw new InvalidSelectionTypeException(getType(), "setCylinderRadius");
+    }
 
-	public void addPolygon(int[] vertexIds)
-	{
-		throw new InvalidSelectionTypeException(this.getType().getName(), "addPolygon");
-	}
-
-	public abstract RegionType getType();
+    public BaseRegion addPolygon(int[] vertexIds) {
+        throw new InvalidSelectionTypeException(getType(), "addPolygon");
+    }
 }

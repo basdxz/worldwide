@@ -1,7 +1,6 @@
 package com.mumfrey.worldeditcui.event;
 
-import com.google.common.base.Joiner;
-import com.mumfrey.worldeditcui.WorldEditCUIController;
+import lombok.Getter;
 
 /**
  * CUI communication event
@@ -9,45 +8,18 @@ import com.mumfrey.worldeditcui.WorldEditCUIController;
  *
  * @author lahwran
  * @author yetanotherx
- *
  */
-public class CUIEventArgs
-{
-	private WorldEditCUIController controller;
-	private String type;
-	private String[] params;
 
-	public CUIEventArgs(WorldEditCUIController controller, String type, String[] params)
-	{
-		this.controller = controller;
-		this.type = type;
+@Getter
+public final class CUIEventArgs {
+    private final String type;
+    private final String[] params;
 
-		if (params.length == 1 && params[0].length() == 0)
-		{
-			params = new String[] {};
-		}
+    public CUIEventArgs(String type, String[] params) {
+        this.type = type;
 
-		this.params = params;
-		this.controller.getDebugger().debug("CUI Event (" + type + ") - Params: " + Joiner.on(", ").join(params));
-	}
-
-	public int getInt(int index)
-	{
-		return (int)Float.parseFloat(this.params[index]);
-	}
-
-	public String getString(int index)
-	{
-		return this.params[index];
-	}
-
-	public String[] getParams()
-	{
-		return this.params;
-	}
-
-	public String getType()
-	{
-		return this.type;
-	}
+        if (params.length == 1 && params[0].isEmpty())
+            params = new String[0];
+        this.params = params;
+    }
 }

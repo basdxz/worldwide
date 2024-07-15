@@ -1,66 +1,58 @@
 package com.mumfrey.worldeditcui.render;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mumfrey.worldeditcui.InitializationFactory;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.region.BaseRegion;
 import com.mumfrey.worldeditcui.render.region.RegionType;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
+
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 
 /**
- *
  * @author Adam Mummery-Smith
  */
-public class CUISelectionProvider implements InitializationFactory
-{
-	private Map<String, Constructor<? extends BaseRegion>> regionConstructors = new HashMap<String, Constructor<? extends BaseRegion>>();
+@RequiredArgsConstructor
+public final class CUISelectionProvider implements InitializationFactory {
+    private final WorldEditCUIController controller;
 
-	private WorldEditCUIController controller;
+    private final Map<String, Constructor<? extends BaseRegion>> regionConstructors = new HashMap<>();
 
-	public CUISelectionProvider(WorldEditCUIController controller)
-	{
-		this.controller = controller;
-	}
+    @Override
+    public void initialize() throws InitializationException {
+        val types = RegionType.values();
+        for (val type : types) {
+            val clazz = type.getRegionClass();
+            val clazzName = clazz.getName();
+            val key = type.getKey();
+            try {
+                val ctor = clazz.getDeclaredConstructor(WorldEditCUIController.class);
+                regionConstructors.put(key, ctor);
+                LOG.debug("Registered selection type: [{}] with class: [{}]", key, clazzName);
+            } catch (Exception e) {
+                LOG.error("Failed to find constructor for region type: [{}] with class: [{}]", key, clazzName, e);
+            }
+        }
+    }
 
-	@Override
-	public void initialize() throws InitializationException
-	{
-		for (RegionType regionType : RegionType.values())
-		{
-			try
-			{
-				Class<? extends BaseRegion> eventClass = regionType.getRegionClass();
-				Constructor<? extends BaseRegion> ctor = eventClass.getDeclaredConstructor(WorldEditCUIController.class);
+    public BaseRegion createSelection(String key) {
+        val ctor = this.regionConstructors.get(key);
+        if (ctor == null) {
+            LOG.warn("Unknown selection type: [{}]", key);
+            return null;
+        }
 
-				this.regionConstructors.put(regionType.getKey(), ctor);
-			}
-			catch (NoSuchMethodException ex)
-			{
-				this.controller.getDebugger().debug("Error getting constructor for region type " + regionType.getKey());
-			}
-		}
-	}
-
-	public BaseRegion createSelection(String key)
-	{
-		try
-		{
-			Constructor<? extends BaseRegion> regionCtor = this.regionConstructors.get(key);
-			BaseRegion region = regionCtor.newInstance(this.controller);
-			return region;
-		}
-		catch (NullPointerException ex)
-		{
-			this.controller.getDebugger().debug("No such selection type " + key);
-		}
-		catch (Exception ex)
-		{
-			this.controller.getDebugger().debug("Error creation " + key + " selection: " + ex.getClass().getSimpleName() + " " + ex.getMessage());
-		}
-
-		return null;
-	}
+        try {
+            return ctor.newInstance(this.controller);
+        } catch (Exception e) {
+            LOG.error("Failed to create new selection: [{}]", key, e);
+            return null;
+        }
+    }
 }

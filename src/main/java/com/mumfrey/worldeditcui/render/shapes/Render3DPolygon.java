@@ -1,8 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineColour;
-import com.mumfrey.worldeditcui.render.LineInfo;
+import com.mumfrey.worldeditcui.render.LineStyle;
+import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.util.Vector3;
+import lombok.AllArgsConstructor;
+import lombok.val;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,31 +14,21 @@ import static org.lwjgl.opengl.GL11.*;
  * @author yetanotherx
  * @author lahwran
  */
-public class Render3DPolygon
-{
+@AllArgsConstructor
+public final class Render3DPolygon {
+    private final LineStyles lineStyles;
+    private final Vector3[] vertices;
 
-	protected LineColour colour;
-	protected Vector3[] vertices;
+    public void render() {
+        for (val lineStyle : lineStyles) {
+            lineStyle.prepareRender();
 
-	public Render3DPolygon(LineColour colour, Vector3... vertices)
-	{
-		this.colour = colour;
-		this.vertices = vertices;
-	}
-
-	public void render()
-	{
-		for (LineInfo tempColour : this.colour.getColours())
-		{
-			tempColour.prepareRender();
-
-			glBegin(GL_LINE_LOOP);
-			tempColour.prepareColour();
-			for (Vector3 vertex : this.vertices)
-			{
-				glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
-			}
-			glEnd();
-		}
-	}
+            glBegin(GL_LINE_LOOP);
+            lineStyle.prepareColour();
+            for (Vector3 vertex : this.vertices) {
+                glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
+            }
+            glEnd();
+        }
+    }
 }
