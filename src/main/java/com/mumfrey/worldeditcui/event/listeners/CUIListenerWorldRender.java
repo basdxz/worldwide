@@ -6,6 +6,7 @@ import com.falsepattern.lib.util.RenderUtil;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 
 import com.mumfrey.worldeditcui.render.region.BaseRegion;
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -30,6 +31,7 @@ public class CUIListenerWorldRender
 		if (selection == null)
 			return;
 
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
 		RenderUtil.bindEmptyTexture();
 
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -50,5 +52,9 @@ public class CUIListenerWorldRender
 
 		glPopMatrix();
 		glPopAttrib();
+
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,
+											  OpenGlHelper.lastBrightnessX,
+											  OpenGlHelper.lastBrightnessY);
 	}
 }
