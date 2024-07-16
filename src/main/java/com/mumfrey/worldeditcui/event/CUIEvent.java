@@ -2,7 +2,7 @@ package com.mumfrey.worldeditcui.event;
 
 import com.google.common.base.Joiner;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.region.BaseRegion;
+import com.mumfrey.worldeditcui.render.selection.SelectionBase;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
@@ -20,7 +20,7 @@ public abstract class CUIEvent {
 
     public abstract CUIEventType getEventType();
 
-    protected final BaseRegion getSelection() {
+    protected final SelectionBase getSelection() {
         val selection = controller.getSelection();
         if (selection == null)
             throw new IllegalStateException("Selection is null");

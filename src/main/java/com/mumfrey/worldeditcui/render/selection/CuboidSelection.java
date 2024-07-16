@@ -1,4 +1,4 @@
-package com.mumfrey.worldeditcui.render.region;
+package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
@@ -9,22 +9,22 @@ import lombok.val;
 import org.joml.Vector3d;
 
 /**
- * Main controller for a cuboid-type region
+ * Main controller for a cuboid-type selection
  *
  * @author yetanotherx
  * @author lahwran
  */
-public final class CuboidRegion extends BaseRegion {
+public final class CuboidSelection extends SelectionBase {
     private PointCube firstPoint;
     private PointCube secondPoint;
 
-    public CuboidRegion(WorldEditCUIController controller) {
+    public CuboidSelection(WorldEditCUIController controller) {
         super(controller);
     }
 
     @Override
-    public RegionType getType() {
-        return RegionType.CUBOID;
+    public SelectionType getType() {
+        return SelectionType.CUBOID;
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class CuboidRegion extends BaseRegion {
     }
 
     @Override
-    public BaseRegion setCuboidPoint(int id, double x, double y, double z) {
+    public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
         if (id == 0) {
             firstPoint = new PointCube(LineStyles.CUBOIDPOINT1, x, y, z);
         } else if (id == 1) {

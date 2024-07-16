@@ -1,4 +1,4 @@
-package com.mumfrey.worldeditcui.render.region;
+package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
@@ -13,21 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main controller for a polygon-type region
+ * Main controller for a polygon-type selection
  *
  * @author TomyLobo
  */
-public final class PolyhedronRegion extends BaseRegion {
+public final class PolyhedronSelection extends SelectionBase {
     private final List<PointCube> vertices = new ArrayList<>();
     private final List<Vector3dc[]> faces = new ArrayList<>();
 
-    public PolyhedronRegion(WorldEditCUIController controller) {
+    public PolyhedronSelection(WorldEditCUIController controller) {
         super(controller);
     }
 
     @Override
-    public RegionType getType() {
-        return RegionType.POLYHEDRON;
+    public SelectionType getType() {
+        return SelectionType.POLYHEDRON;
     }
 
     @Override
@@ -39,7 +39,7 @@ public final class PolyhedronRegion extends BaseRegion {
     }
 
     @Override
-    public BaseRegion setCuboidPoint(int id, double x, double y, double z) {
+    public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
         val lineStyles = id == 0 ? LineStyles.CUBOIDPOINT1 : LineStyles.POLYPOINT;
         val vertex = new PointCube(lineStyles, x, y, z);
 
@@ -54,7 +54,7 @@ public final class PolyhedronRegion extends BaseRegion {
     }
     
     @Override
-    public BaseRegion addPolygon(int[] vertexIds) {
+    public SelectionBase addPolygon(int[] vertexIds) {
         val face = new Vector3dc[vertexIds.length];
         for (var i = 0; i < vertexIds.length; ++i) {
             val vertex = vertices.get(vertexIds[i]);

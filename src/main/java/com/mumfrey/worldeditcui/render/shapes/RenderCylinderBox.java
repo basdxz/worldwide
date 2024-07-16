@@ -8,7 +8,7 @@ import lombok.var;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Draws the top and bottom circles around a cylindrical region
+ * Draws the top and bottom circles around a cylindrical selection
  *
  * @author yetanotherx
  */

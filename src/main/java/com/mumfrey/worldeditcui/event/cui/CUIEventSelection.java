@@ -3,7 +3,6 @@ package com.mumfrey.worldeditcui.event.cui;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.CUIEvent;
 import com.mumfrey.worldeditcui.event.CUIEventType;
-import com.mumfrey.worldeditcui.render.region.BaseRegion;
 import lombok.val;
 
 import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;

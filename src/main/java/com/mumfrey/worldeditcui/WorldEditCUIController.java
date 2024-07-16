@@ -4,8 +4,8 @@ import com.mumfrey.worldeditcui.config.CUIConfiguration;
 import com.mumfrey.worldeditcui.event.CUIEventDispatcher;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.CUISelectionProvider;
-import com.mumfrey.worldeditcui.render.region.BaseRegion;
-import com.mumfrey.worldeditcui.render.region.CuboidRegion;
+import com.mumfrey.worldeditcui.render.selection.CuboidSelection;
+import com.mumfrey.worldeditcui.render.selection.SelectionBase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 public final class WorldEditCUIController implements InitializationFactory {
     @Setter
-    private BaseRegion selection;
+    private SelectionBase selection;
 
     private CUIConfiguration configuration;
     private CUIEventDispatcher dispatcher;
@@ -31,7 +31,7 @@ public final class WorldEditCUIController implements InitializationFactory {
 
     @Override
     public void initialize() throws InitializationException {
-        this.selection = new CuboidRegion(this);
+        this.selection = new CuboidSelection(this);
         this.configuration = CUIConfiguration.create();
         this.dispatcher = new CUIEventDispatcher(this);
         this.selectionProvider = new CUISelectionProvider(this);

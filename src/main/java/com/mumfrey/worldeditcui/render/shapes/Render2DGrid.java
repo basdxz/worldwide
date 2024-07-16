@@ -11,7 +11,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Draws the grid for a polygon region
+ * Draws the grid for a polygon selection
  *
  * @author yetanotherx
  * @author lahwran

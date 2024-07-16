@@ -1,4 +1,4 @@
-package com.mumfrey.worldeditcui.render.region;
+package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
@@ -9,24 +9,24 @@ import com.mumfrey.worldeditcui.render.shapes.RenderCylinderGrid;
 import lombok.var;
 
 /**
- * Main controller for a cylinder-type region
+ * Main controller for a cylinder-type selection
  *
  * @author yetanotherx
  */
-public final class CylinderRegion extends BaseRegion {
+public final class CylinderSelection extends SelectionBase {
     private PointCube center;
     private double radX = 0;
     private double radZ = 0;
     private int minY = 0;
     private int maxY = 0;
 
-    public CylinderRegion(WorldEditCUIController controller) {
+    public CylinderSelection(WorldEditCUIController controller) {
         super(controller);
     }
 	
 	@Override
-	public RegionType getType() {
-		return RegionType.CYLINDER;
+    public SelectionType getType() {
+        return SelectionType.CYLINDER;
 	}
 	
     @Override
@@ -49,20 +49,20 @@ public final class CylinderRegion extends BaseRegion {
     }
 
     @Override
-    public BaseRegion setCylinderCenter(int x, int y, int z) {
+    public SelectionBase setCylinderCenter(int x, int y, int z) {
         center = new PointCube(LineStyles.CYLINDERCENTER, x, y, z);
         return this;
     }
 
     @Override
-    public BaseRegion setCylinderRadius(double x, double z) {
+    public SelectionBase setCylinderRadius(double x, double z) {
         this.radX = x;
         this.radZ = z;
         return this;
     }
 
     @Override
-    public BaseRegion setMinMax(int min, int max) {
+    public SelectionBase setMinMax(int min, int max) {
         this.minY = min;
         this.maxY = max;
         return this;

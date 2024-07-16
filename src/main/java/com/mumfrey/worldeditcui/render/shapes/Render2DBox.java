@@ -11,7 +11,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Draws the top and bottom rings of a polygon region
+ * Draws the top and bottom rings of a polygon selection
  *
  * @author yetanotherx
  * @author lahwran

@@ -2,7 +2,7 @@ package com.mumfrey.worldeditcui.event.listeners;
 
 import com.falsepattern.lib.util.RenderUtil;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.region.BaseRegion;
+import com.mumfrey.worldeditcui.render.selection.SelectionBase;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -46,7 +46,7 @@ public final class CUIListenerWorldRender {
         }
     }
 
-    private static void onRenderImpl(BaseRegion selection) {
+    private static void onRenderImpl(SelectionBase selection) {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         RenderUtil.bindEmptyTexture();
 

@@ -3,13 +3,12 @@ package com.mumfrey.worldeditcui.render;
 import com.mumfrey.worldeditcui.InitializationFactory;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
-import com.mumfrey.worldeditcui.render.region.BaseRegion;
-import com.mumfrey.worldeditcui.render.region.RegionType;
+import com.mumfrey.worldeditcui.render.selection.SelectionBase;
+import com.mumfrey.worldeditcui.render.selection.SelectionType;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,27 +21,27 @@ import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 public final class CUISelectionProvider implements InitializationFactory {
     private final WorldEditCUIController controller;
 
-    private final Map<String, Constructor<? extends BaseRegion>> regionConstructors = new HashMap<>();
+    private final Map<String, Constructor<? extends SelectionBase>> selectionConstructors = new HashMap<>();
 
     @Override
     public void initialize() throws InitializationException {
-        val types = RegionType.values();
+        val types = SelectionType.values();
         for (val type : types) {
-            val clazz = type.getRegionClass();
+            val clazz = type.getSelectionClass();
             val clazzName = clazz.getName();
             val key = type.getKey();
             try {
                 val ctor = clazz.getDeclaredConstructor(WorldEditCUIController.class);
-                regionConstructors.put(key, ctor);
+                selectionConstructors.put(key, ctor);
                 LOG.debug("Registered selection type: [{}] with class: [{}]", key, clazzName);
             } catch (Exception e) {
-                LOG.error("Failed to find constructor for region type: [{}] with class: [{}]", key, clazzName, e);
+                LOG.error("Failed to find constructor for selection type: [{}] with class: [{}]", key, clazzName, e);
             }
         }
     }
 
-    public BaseRegion createSelection(String key) {
-        val ctor = this.regionConstructors.get(key);
+    public SelectionBase createSelection(String key) {
+        val ctor = this.selectionConstructors.get(key);
         if (ctor == null) {
             LOG.warn("Unknown selection type: [{}]", key);
             return null;

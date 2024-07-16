@@ -1,4 +1,4 @@
-package com.mumfrey.worldeditcui.render.region;
+package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main controller for a polygon-type region
+ * Main controller for a polygon-type selection
  *
  * @author yetanotherx
  * @author lahwran
  */
-public final class PolygonRegion extends BaseRegion {
+public final class PolygonSelection extends SelectionBase {
     private final List<PointRectangle> points = new ArrayList<>();
 
     private int min;
     private int max;
 
-    public PolygonRegion(WorldEditCUIController controller) {
+    public PolygonSelection(WorldEditCUIController controller) {
         super(controller);
     }
 
@@ -36,14 +36,14 @@ public final class PolygonRegion extends BaseRegion {
     }
 
     @Override
-    public BaseRegion setMinMax(int min, int max) {
+    public SelectionBase setMinMax(int min, int max) {
         this.min = min;
         this.max = max;
         return this;
     }
 
     @Override
-    public BaseRegion setPolygonPoint(int id, int x, int z) {
+    public SelectionBase setPolygonPoint(int id, int x, int z) {
         val point = new PointRectangle(LineStyles.POLYPOINT, x, z);
 
         if (id < points.size()) {
@@ -58,7 +58,7 @@ public final class PolygonRegion extends BaseRegion {
     }
 
     @Override
-    public RegionType getType() {
-        return RegionType.POLYGON;
+    public SelectionType getType() {
+        return SelectionType.POLYGON;
     }
 }

@@ -9,8 +9,8 @@ import org.joml.Vector3dc;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Draws the grid for a region between
- * two corners in a cuboid region.
+ * Draws the grid for a selection between
+ * two corners in a cuboid selection.
  *
  * @author yetanotherx
  */

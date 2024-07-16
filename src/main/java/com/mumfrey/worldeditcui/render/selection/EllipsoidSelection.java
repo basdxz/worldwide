@@ -1,4 +1,4 @@
-package com.mumfrey.worldeditcui.render.region;
+package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
@@ -8,24 +8,24 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 /**
- * Main controller for a ellipsoid-type region
+ * Main controller for a ellipsoid-type selection
  *
  * @author yetanotherx
  * @author lahwran
  */
-public final class EllipsoidRegion extends BaseRegion {
+public final class EllipsoidSelection extends SelectionBase {
     private final Vector3d radii = new Vector3d();
 
     @Nullable
     private PointCube center;
 
-    public EllipsoidRegion(WorldEditCUIController controller) {
+    public EllipsoidSelection(WorldEditCUIController controller) {
         super(controller);
     }
 
     @Override
-    public RegionType getType() {
-        return RegionType.ELLIPSOID;
+    public SelectionType getType() {
+        return SelectionType.ELLIPSOID;
     }
 
     @Override
@@ -37,13 +37,13 @@ public final class EllipsoidRegion extends BaseRegion {
     }
 
     @Override
-    public BaseRegion setEllipsoidCenter(int x, int y, int z) {
+    public SelectionBase setEllipsoidCenter(int x, int y, int z) {
         center = new PointCube(LineStyles.ELLIPSOIDCENTER, x, y, z);
         return this;
     }
 
     @Override
-    public BaseRegion setEllipsoidRadii(double x, double y, double z) {
+    public SelectionBase setEllipsoidRadii(double x, double y, double z) {
         radii.set(x, y, z);
         return this;
     }

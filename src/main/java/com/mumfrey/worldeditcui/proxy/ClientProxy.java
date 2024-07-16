@@ -5,7 +5,7 @@ import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerChannel;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerWorldRender;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
-import com.mumfrey.worldeditcui.render.region.CuboidRegion;
+import com.mumfrey.worldeditcui.render.selection.CuboidSelection;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -148,7 +148,7 @@ public final class ClientProxy extends CommonProxy {
     private void dropHandshake(String reason) {
         if (didHandshake) {
             didHandshake = false;
-            controller.setSelection(new CuboidRegion(controller));
+            controller.setSelection(new CuboidSelection(controller));
             LOG.debug("Dropped Handshake [{}]", reason);
         }
     }
