@@ -24,7 +24,7 @@ public final class EllipsoidSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionType getType() {
+    public SelectionType type() {
         return SelectionType.ELLIPSOID;
     }
 

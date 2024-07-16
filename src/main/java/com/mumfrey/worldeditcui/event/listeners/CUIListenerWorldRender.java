@@ -35,7 +35,7 @@ public final class CUIListenerWorldRender {
         if (!isVisible)
             return;
 
-        val selection = controller.getSelection();
+        val selection = controller.selection();
         if (selection == null)
             return;
 

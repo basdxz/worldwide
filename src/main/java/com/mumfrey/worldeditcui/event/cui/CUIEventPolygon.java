@@ -30,7 +30,7 @@ public final class CUIEventPolygon extends CUIEvent {
     public String raise() {
         val vertexIds = getVertexIds();
         LOG.debug("Adding new polygon: {}", Arrays.toString(vertexIds));
-        getSelection().addPolygon(vertexIds);
+        selection().addPolygon(vertexIds);
         return null;
     }
 

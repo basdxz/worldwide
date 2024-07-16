@@ -32,7 +32,7 @@ public final class CUIEventCylinder extends CUIEvent {
         val radiusZ = this.getDouble(4);
         LOG.debug("Selecting cylinder: [x={}, y={}, z={}, radiusX={}, radiusZ={}]", x, y, z, radiusX, radiusZ);
 
-        val selection = getSelection();
+        val selection = selection();
         selection.setCylinderCenter(x, y, z);
         selection.setCylinderRadius(radiusX, radiusZ);
         return null;

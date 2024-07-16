@@ -26,7 +26,7 @@ public final class PolyhedronSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionType getType() {
+    public SelectionType type() {
         return SelectionType.POLYHEDRON;
     }
 

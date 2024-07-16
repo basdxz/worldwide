@@ -26,9 +26,9 @@ public final class CUIEventDispatcher implements InitializationFactory {
     public void initialize() throws InitializationException {
         val types = CUIEventType.values();
         for (val type : types) {
-            val clazz = type.getEventClass();
+            val clazz = type.eventClass();
             val clazzName = clazz.getName();
-            val key = type.getKey();
+            val key = type.key();
             try {
                 val ctor = clazz.getDeclaredConstructor(WorldEditCUIController.class, String[].class);
                 eventConstructors.put(key, ctor);
@@ -40,7 +40,7 @@ public final class CUIEventDispatcher implements InitializationFactory {
     }
 
     public void raiseEvent(CUIEventArgs args) {
-        val type = args.getType();
+        val type = args.type();
 
         val ctor = this.eventConstructors.get(type);
         if (ctor == null) {
@@ -48,7 +48,7 @@ public final class CUIEventDispatcher implements InitializationFactory {
             return;
         }
 
-        val params = args.getParams();
+        val params = args.params();
         final CUIEvent evt;
         try {
             evt = ctor.newInstance(this.controller, params);

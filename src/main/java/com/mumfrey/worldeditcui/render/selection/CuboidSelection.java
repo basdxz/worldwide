@@ -23,7 +23,7 @@ public final class CuboidSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionType getType() {
+    public SelectionType type() {
         return SelectionType.CUBOID;
     }
 

@@ -148,7 +148,7 @@ public final class ClientProxy extends CommonProxy {
     private void dropHandshake(String reason) {
         if (didHandshake) {
             didHandshake = false;
-            controller.setSelection(new CuboidSelection(controller));
+            controller.selection(new CuboidSelection(controller));
             LOG.debug("Dropped Handshake [{}]", reason);
         }
     }

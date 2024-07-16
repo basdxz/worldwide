@@ -27,9 +27,9 @@ public final class CUISelectionProvider implements InitializationFactory {
     public void initialize() throws InitializationException {
         val types = SelectionType.values();
         for (val type : types) {
-            val clazz = type.getSelectionClass();
+            val clazz = type.selectionClass();
             val clazzName = clazz.getName();
-            val key = type.getKey();
+            val key = type.key();
             try {
                 val ctor = clazz.getDeclaredConstructor(WorldEditCUIController.class);
                 selectionConstructors.put(key, ctor);

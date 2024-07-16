@@ -26,11 +26,11 @@ public final class CUIEventSelection extends CUIEvent {
     @Override
     public String raise() {
         val key = this.getString(0);
-        val selection = controller.getSelectionProvider().createSelection(key);
+        val selection = controller.selectionProvider().createSelection(key);
         if (selection != null)
             selection.initialize();
         LOG.debug("Setting new selection: [{}]", selection);
-        controller.setSelection(selection);
+        controller.selection(selection);
         return null;
     }
 }

@@ -58,7 +58,7 @@ public final class PolygonSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionType getType() {
+    public SelectionType type() {
         return SelectionType.POLYGON;
     }
 }

@@ -29,7 +29,7 @@ public final class CUIEventPoint2D extends CUIEvent {
         val x = this.getInt(1);
         val z = this.getInt(2);
         LOG.debug("Setting polygon point: [id={}, x={}, z={}]", id, x, z);
-        getSelection().setPolygonPoint(id, x, z);
+        selection().setPolygonPoint(id, x, z);
         return null;
     }
 }

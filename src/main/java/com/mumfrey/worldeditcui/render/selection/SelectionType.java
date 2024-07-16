@@ -1,5 +1,6 @@
 package com.mumfrey.worldeditcui.render.selection;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +22,7 @@ public enum SelectionType {
     ;
 
     private final String key;
+    @Getter(AccessLevel.NONE)
     private final String name;
     private final Class<? extends SelectionBase> selectionClass;
 

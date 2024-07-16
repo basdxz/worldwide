@@ -28,7 +28,7 @@ public final class CUIEventBounds extends CUIEvent {
         val min = getInt(0);
         val max = getInt(1);
         LOG.debug("Resizing selection: [min={}, max={}]", min, max);
-        getSelection().setMinMax(min, max);
+        selection().setMinMax(min, max);
         return null;
     }
 }

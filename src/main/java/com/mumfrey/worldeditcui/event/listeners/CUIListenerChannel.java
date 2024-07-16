@@ -28,7 +28,7 @@ public final class CUIListenerChannel {
         }
 
         try {
-            controller.getDispatcher().raiseEvent(args);
+            controller.dispatcher().raiseEvent(args);
         } catch (Exception e) {
             LOG.error("Failed to raise CUI event: [{}]", message, e);
         }

@@ -1,14 +1,7 @@
 package com.mumfrey.worldeditcui.event;
 
-import com.mumfrey.worldeditcui.event.cui.CUIEventBounds;
-import com.mumfrey.worldeditcui.event.cui.CUIEventCylinder;
-import com.mumfrey.worldeditcui.event.cui.CUIEventEllipsoid;
-import com.mumfrey.worldeditcui.event.cui.CUIEventPoint2D;
-import com.mumfrey.worldeditcui.event.cui.CUIEventPoint3D;
-import com.mumfrey.worldeditcui.event.cui.CUIEventPolygon;
-import com.mumfrey.worldeditcui.event.cui.CUIEventSelection;
-import com.mumfrey.worldeditcui.event.cui.CUIEventUpdate;
-import lombok.AllArgsConstructor;
+import com.mumfrey.worldeditcui.event.cui.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
@@ -27,6 +20,7 @@ public enum CUIEventType {
 
 	private final Class<? extends CUIEvent> eventClass;
 	private final String key;
+	@Getter(AccessLevel.NONE)
 	private final String name;
 	private final int minParameters;
 	private final int maxParameters;
@@ -41,5 +35,11 @@ public enum CUIEventType {
 		this.name = eventClass.getSimpleName().substring(8);
 		this.minParameters = minParameters;
 		this.maxParameters = MaxParameters;
+	}
+
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

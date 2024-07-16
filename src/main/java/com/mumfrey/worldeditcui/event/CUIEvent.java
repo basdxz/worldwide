@@ -20,15 +20,11 @@ public abstract class CUIEvent {
 
     public abstract CUIEventType getEventType();
 
-    protected final SelectionBase getSelection() {
-        val selection = controller.getSelection();
+    protected final SelectionBase selection() {
+        val selection = controller.selection();
         if (selection == null)
             throw new IllegalStateException("Selection is null");
         return selection;
-    }
-
-    public final String getEventName() {
-        return getEventType().getName();
     }
 
     /**
@@ -39,34 +35,33 @@ public abstract class CUIEvent {
     public final boolean isValid() {
         val type = getEventType();
 
-        val min = type.getMinParameters();
-        val max = type.getMaxParameters();
+        val min = type.minParameters();
+        val max = type.maxParameters();
         if (min == max) {
-            return this.args.length == max;
+            return args.length == max;
         } else {
-            return this.args.length <= max && this.args.length >= min;
+            return args.length <= max && args.length >= min;
         }
     }
 
     public final void prepare() {
-        if (this.controller == null || this.args == null) {
-            throw new IllegalStateException("Controller and parameters must both be set.");
-        }
+        if (controller == null || args == null)
+            throw new IllegalStateException("Controller and parameters must both be set");
 
-        if (!this.isValid()) {
-            String message = String.format("Invalid number of parameters. %s event requires %s parameters but received %s [%s]",
-                                           this.getEventName(),
-                                           this.getRequiredParameterString(),
-                                           this.args.length,
-                                           Joiner.on(", ").join(this.args));
+        if (!isValid()) {
+            val message = String.format("Invalid number of parameters. %s event requires %s parameters but received %s [%s]",
+                                        getEventType(),
+                                        getRequiredParameterString(),
+                                        args.length,
+                                        Joiner.on(", ").join(args));
             throw new IllegalArgumentException(message);
         }
     }
 
     private String getRequiredParameterString() {
         val type = getEventType();
-        val min = type.getMinParameters();
-        val max = type.getMaxParameters();
+        val min = type.minParameters();
+        val max = type.maxParameters();
 
         if (min == max)
             return String.valueOf(max);

@@ -30,7 +30,7 @@ public final class CUIEventPoint3D extends CUIEvent {
         val y = this.getDouble(2);
         val z = this.getDouble(3);
         LOG.debug("Setting cuboid point: [id={}, x={}, y={}, z={}]", id, x, y, z);
-        getSelection().setCuboidPoint(id, x, y, z);
+        selection().setCuboidPoint(id, x, y, z);
         return null;
     }
 }
