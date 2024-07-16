@@ -1,14 +1,13 @@
 package com.mumfrey.worldeditcui.proxy;
 
+import com.falsepattern.worldedit.api.WorldEditCUIAPI;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerChannel;
 import com.mumfrey.worldeditcui.event.listeners.CUIListenerWorldRender;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.region.CuboidRegion;
-import com.sk89q.worldedit.forge.network.WENetAPI;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -66,7 +65,7 @@ public final class ClientProxy extends CommonProxy {
 
         this.didHandshake = false;
 
-        WENetAPI.setupCUIHandler(MOD_NAME, this::onCUIHandshake, this::onCUIMessage);
+        WorldEditCUIAPI.initCUIHandler(MOD_NAME, this::onCUIHandshake, this::onCUIMessage);
 
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
@@ -113,8 +112,8 @@ public final class ClientProxy extends CommonProxy {
         if (isValid) {
             didHandshake = true;
             LOG.debug("CUI handshake success");
-            LOG.debug("Requesting CUI setup [Post-Handshake]");
-            WENetAPI.requestCUISetup();
+            LOG.debug("Requesting CUI Update [Post-Handshake]");
+            WorldEditCUIAPI.requestCUIUpdate();
         } else {
             dropHandshake("Server Angy");
             LOG.debug("CUI handshake failed");
@@ -143,7 +142,7 @@ public final class ClientProxy extends CommonProxy {
     private void requestHandshake(String reason) {
         didHandshake = false;
         LOG.debug("Requesting Handshake [{}]", reason);
-        WENetAPI.requestCUIHandshake(CLIENT_WECUI_API_VERSION);
+        WorldEditCUIAPI.requestCUIHandshake(CLIENT_WECUI_API_VERSION);
     }
 
     private void dropHandshake(String reason) {
