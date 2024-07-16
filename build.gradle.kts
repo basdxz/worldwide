@@ -30,8 +30,8 @@ repositories {
 }
 
 dependencies {
-    apiSplit("com.falsepattern:falsepatternlib-mc1.7.10:1.3.0-1-g3b83315:dev")
+    apiSplit("com.falsepattern:falsepatternlib-mc1.7.10:1.3.1")
 
     //TODO: Switch to Non-local pre-release
-    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-9-g2be82955:dev")
+    implementation("com.falsepattern:worldedit-mc1.7.10:6.2.0-11-g5f52973f:dev")
 }

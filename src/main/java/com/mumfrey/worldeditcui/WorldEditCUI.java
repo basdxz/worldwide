@@ -78,27 +78,6 @@ public class WorldEditCUI {
         FMLCommonHandler.instance().bus().register(this);
     }
 
-    private void onCUIHandshake(boolean isValid, int serverAPIVersion) {
-        didHandshake = isValid;
-        if (isValid) {
-            LOG.debug("CUI handshake success");
-            LOG.debug("Requesting CUI setup [Post-Handshake]");
-            WENetAPI.requestCUISetup();
-        } else {
-            LOG.debug("CUI handshake failed");
-        }
-        LOG.debug("Client CUI Version: [{}]", CLIENT_WECUI_API_VERSION);
-        LOG.debug("Server CUI Version: [{}]", serverAPIVersion);
-    }
-
-    private void onCUIMessage(String message) {
-        if (!didHandshake) {
-            didHandshake = true;
-            LOG.debug("CUI Message without handshake? :swagok:");
-        }
-        channelListener.onMessage(message);
-    }
-
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent evt) {
         if (evt.phase != TickEvent.Phase.START)
@@ -114,24 +93,7 @@ public class WorldEditCUI {
             lastWorld = new WeakReference<>(null);
             lastPlayer = new WeakReference<>(null);
 
-            // Reset the controller if a handshake did happen in the past
-            if (didHandshake) {
-                didHandshake = false;
-                controller.setSelection(new CuboidRegion(controller));
-            }
-            return;
-        }
-
-        // If the last world was null (but this one is not) we assume that the player just joined a world.
-        if (lastWorld.get() == null) {
-            // Request a handshake
-            didHandshake = false;
-            LOG.debug("Starting CUI handshake [World Join]");
-            WENetAPI.requestCUIHandshake(CLIENT_WECUI_API_VERSION);
-
-            // Set our field tracking & return
-            lastWorld = new WeakReference<>(currentWorld);
-            lastPlayer = new WeakReference<>(currentPlayer);
+            dropHandshake("Not in World");
             return;
         }
 
@@ -139,12 +101,9 @@ public class WorldEditCUI {
         if (mc.currentScreen == null)
             handleKeyBinds(currentPlayer);
 
-        // If the player or world are not the same, assume a dimension switch
+        // If the player or world are not the same, assume a world change/server join
         if (currentWorld != lastWorld.get() || currentPlayer != lastPlayer.get()) {
-            // Request a new CUI setup so we're up-to date in the new world
-
-            LOG.debug("Requesting CUI setup [World Change]");
-            WENetAPI.requestCUISetup();
+            requestHandshake("World Change");
 
             lastWorld = new WeakReference<>(currentWorld);
             lastPlayer = new WeakReference<>(currentPlayer);
@@ -156,14 +115,48 @@ public class WorldEditCUI {
         worldRenderListener.onRender();
     }
 
+    private void onCUIHandshake(boolean isValid, int serverAPIVersion) {
+        if (isValid) {
+            didHandshake = true;
+            LOG.debug("CUI handshake success");
+            LOG.debug("Requesting CUI setup [Post-Handshake]");
+            WENetAPI.requestCUISetup();
+        } else {
+            dropHandshake("Server Angy");
+            LOG.debug("CUI handshake failed");
+        }
+        LOG.debug("Client CUI Version: [{}]", CLIENT_WECUI_API_VERSION);
+        LOG.debug("Server CUI Version: [{}]", serverAPIVersion);
+    }
+
+    private void onCUIMessage(String message) {
+        if (!didHandshake) {
+            didHandshake = true;
+            LOG.debug("CUI Message without handshake? :swagok:");
+        }
+        channelListener.onMessage(message);
+    }
+
     private void handleKeyBinds(EntityClientPlayerMP player) {
         if (keyBindToggleUI.isPressed())
             worldRenderListener.toggleVisible();
         if (keyBindClearSel.isPressed())
             player.sendChatMessage("//sel");
-        if (keyBindRefresh.isPressed()) {
-            LOG.debug("Requesting CUI setup [User Refresh]");
-            WENetAPI.requestCUISetup();
+        if (keyBindRefresh.isPressed())
+            requestHandshake("User Request");
+    }
+
+    private void requestHandshake(String reason) {
+        didHandshake = false;
+        LOG.debug("Requesting Handshake [{}]", reason);
+        WENetAPI.requestCUIHandshake(CLIENT_WECUI_API_VERSION);
+    }
+
+    private void dropHandshake(String reason) {
+        if (didHandshake) {
+            didHandshake = false;
+            controller.setSelection(new CuboidRegion(controller));
+            LOG.debug("Dropped Handshake [{}]", reason);
         }
     }
 
