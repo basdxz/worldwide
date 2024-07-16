@@ -36,13 +36,9 @@ public final class Render2DGrid {
 
             glBegin(GL_LINE_LOOP);
             lineStyle.prepareColour();
-            for (val rectPoint : this.points) {
-                if (rectPoint != null) {
-                    val point = rectPoint.getPoint();
-                    glVertex3d(point.getX() + 0.5D,
-                               height,
-                               point.getY() + 0.5D);
-                }
+            for (val point : this.points) {
+                if (point != null)
+                    glVertex3d(point.x() + 0.5D, height, point.y() + 0.5D);
             }
             glEnd();
         }

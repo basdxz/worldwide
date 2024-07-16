@@ -2,9 +2,9 @@ package com.mumfrey.worldeditcui.render.points;
 
 import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.shapes.Render3DBox;
-import com.mumfrey.worldeditcui.util.Vector2;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.val;
+import org.joml.Vector3d;
 
 /**
  * Stores data about a prism surrounding two
@@ -15,26 +15,25 @@ import lombok.Setter;
  * @author yetanotherx
  * @author lahwran
  */
-
-@Setter
-@Getter
+@AllArgsConstructor
 public final class PointRectangle {
-    private Vector2 point;
-    private LineStyles colour = LineStyles.POLYPOINT;
+    private final LineStyles lineStyles;
 
-    public PointRectangle(Vector2 point) {
-        this.point = point;
+    private final double x;
+    private final double y;
+
+    public double x() {
+        return x;
     }
 
-    public PointRectangle(int x, int z) {
-        this.point = new Vector2(x, z);
+    public double y() {
+        return y;
     }
 
-    public void render(int min, int max) {
-        float off = 0.03f;
-        Vector2 minVec = new Vector2(off, off);
-        Vector2 maxVec = new Vector2(off + 1, off + 1);
-
-        new Render3DBox(colour, point.subtract(minVec).toVector3(min - off), point.add(maxVec).toVector3(max + 1 + off)).render();
+    public void render(double min, double max) {
+        val eps = 0.03D;
+        val first = new Vector3d(x, y, min).sub(eps, eps, eps);
+        val second = new Vector3d(x, y, max).add(eps + 1D, eps + 1D, eps + 1D);
+        new Render3DBox(lineStyles, first, second).render();
     }
 }

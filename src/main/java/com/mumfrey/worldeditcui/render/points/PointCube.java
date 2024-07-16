@@ -2,10 +2,9 @@ package com.mumfrey.worldeditcui.render.points;
 
 import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.shapes.Render3DBox;
-import com.mumfrey.worldeditcui.util.Vector3;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.val;
+import org.joml.Vector3d;
 
 /**
  * Stores data about a cube surrounding a
@@ -16,29 +15,30 @@ import lombok.val;
  * @author yetanotherx
  * @author lahwran
  */
-@Setter
-@Getter
+@AllArgsConstructor
 public final class PointCube {
-    private Vector3 point;
-    private LineStyles colour = LineStyles.CUBOIDPOINT1;
+    private final LineStyles lineStyles;
 
-    public PointCube(Vector3 point) {
-        this.point = point;
+    private final double x;
+    private final double y;
+    private final double z;
+
+    public double x() {
+        return x;
     }
 
-    public PointCube(int x, int y, int z) {
-        this.point = new Vector3(x, y, z);
+    public double y() {
+        return y;
     }
 
-    public PointCube(double x, double y, double z) {
-        this.point = new Vector3(x, y, z);
+    public double z() {
+        return z;
     }
 
     public void render() {
-        val eps = 0.03F;
-        val minVec = new Vector3(eps, eps, eps);
-        val maxVec = new Vector3(eps + 1F, eps + 1F, eps + 1F);
-
-        new Render3DBox(colour, point.subtract(minVec), point.add(maxVec)).render();
+        val eps = 0.03D;
+        val first = new Vector3d(x, y, z).sub(eps, eps, eps);
+        val second = new Vector3d(x, y, z).add(eps + 1D, eps + 1D, eps + 1D);
+        new Render3DBox(lineStyles, first, second).render();
     }
 }

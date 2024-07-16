@@ -1,11 +1,10 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineStyle;
 import com.mumfrey.worldeditcui.render.LineStyles;
-import com.mumfrey.worldeditcui.util.Vector3;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import lombok.var;
+import org.joml.Vector3dc;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -18,19 +17,19 @@ import static org.lwjgl.opengl.GL11.*;
 @AllArgsConstructor
 public final class Render3DGrid {
     private final LineStyles lineStyles;
-    private final Vector3 first;
-    private final Vector3 second;
+    private final Vector3dc first;
+    private final Vector3dc second;
 
     public void render() {
         val offsetSize = 1D;
         val msize = 150;
 
-        val x1 = first.getX();
-        val y1 = first.getY();
-        val z1 = first.getZ();
-        val x2 = second.getX();
-        val y2 = second.getY();
-        val z2 = second.getZ();
+        val x1 = first.x();
+        val y1 = first.y();
+        val z1 = first.z();
+        val x2 = second.x();
+        val y2 = second.y();
+        val z2 = second.z();
 
         for (val lineStyle : lineStyles) {
             lineStyle.prepareRender();

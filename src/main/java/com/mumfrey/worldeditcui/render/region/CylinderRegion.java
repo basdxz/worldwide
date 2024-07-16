@@ -39,8 +39,8 @@ public final class CylinderRegion extends BaseRegion {
         var tMin = minY;
         var tMax = maxY;
         if (minY == 0 || maxY == 0) {
-            tMin = (int) center.getPoint().getY();
-            tMax = (int) center.getPoint().getY();
+            tMin = (int) center.y();
+            tMax = (int) center.y();
         }
 
         new RenderCylinderCircles(LineStyles.CYLINDERGRID, center, radX, radZ, tMin, tMax).render();
@@ -50,8 +50,7 @@ public final class CylinderRegion extends BaseRegion {
 
     @Override
     public BaseRegion setCylinderCenter(int x, int y, int z) {
-        center = new PointCube(x, y, z);
-        center.setColour(LineStyles.CYLINDERCENTER);
+        center = new PointCube(LineStyles.CYLINDERCENTER, x, y, z);
         return this;
     }
 

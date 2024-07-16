@@ -1,0 +1,23 @@
+{
+  "identifier"  : "falsepatternlib_dependencies",
+  "repositories": [
+    "https://repo1.maven.org/maven2/"
+  ],
+  "dependencies": {
+    "always": {
+      "common": [],
+      "client": [],
+      "server": []
+    },
+    "obf"   : {
+      "common": [],
+      "client": ["org.joml:joml:1.10.7"],
+      "server": []
+    },
+    "dev"   : {
+      "common": [],
+      "client": [],
+      "server": []
+    }
+  }
+}

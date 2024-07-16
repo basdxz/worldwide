@@ -28,7 +28,8 @@ public final class PolygonRegion extends BaseRegion {
 
     @Override
     public void render() {
-        points.forEach(point -> point.render(min, max));
+        for (val point : points)
+            point.render(min, max);
 
         new Render2DBox(LineStyles.POLYBOX, points, min, max).render();
         new Render2DGrid(LineStyles.POLYGRID, points, min, max).render();
@@ -43,8 +44,7 @@ public final class PolygonRegion extends BaseRegion {
 
     @Override
     public BaseRegion setPolygonPoint(int id, int x, int z) {
-        val point = new PointRectangle(x, z);
-        point.setColour(LineStyles.POLYPOINT);
+        val point = new PointRectangle(LineStyles.POLYPOINT, x, z);
 
         if (id < points.size()) {
             points.set(id, point);

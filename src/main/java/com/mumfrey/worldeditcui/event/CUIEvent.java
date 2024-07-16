@@ -74,7 +74,7 @@ public abstract class CUIEvent {
     }
 
     public final int getInt(int index) {
-        return (int) Float.parseFloat(this.args[index]);
+        return Integer.parseInt(this.args[index]);
     }
 
     public final double getDouble(int index) {

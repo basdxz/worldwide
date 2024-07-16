@@ -1,10 +1,9 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineStyle;
 import com.mumfrey.worldeditcui.render.LineStyles;
-import com.mumfrey.worldeditcui.util.Vector3;
 import lombok.AllArgsConstructor;
 import lombok.val;
+import org.joml.Vector3dc;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -17,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
 @AllArgsConstructor
 public final class Render3DPolygon {
     private final LineStyles lineStyles;
-    private final Vector3[] vertices;
+    private final Vector3dc[] vertices;
 
     public void render() {
         for (val lineStyle : lineStyles) {
@@ -25,9 +24,8 @@ public final class Render3DPolygon {
 
             glBegin(GL_LINE_LOOP);
             lineStyle.prepareColour();
-            for (Vector3 vertex : this.vertices) {
-                glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
-            }
+            for (val vertex : this.vertices)
+                glVertex3d(vertex.x(), vertex.y(), vertex.z());
             glEnd();
         }
     }

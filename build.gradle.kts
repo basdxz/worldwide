@@ -23,6 +23,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.joml:joml:1.10.7")
+
     apiSplit("com.falsepattern:falsepatternlib-mc1.7.10:1.3.1")
     apiSplit("com.falsepattern:worldedit-mc1.7.10:6.3.0")
 }

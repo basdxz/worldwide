@@ -5,8 +5,8 @@ import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.Render3DBox;
 import com.mumfrey.worldeditcui.render.shapes.Render3DGrid;
-import com.mumfrey.worldeditcui.util.Vector3m;
 import lombok.val;
+import org.joml.Vector3d;
 
 /**
  * Main controller for a cuboid-type region
@@ -46,11 +46,9 @@ public final class CuboidRegion extends BaseRegion {
     @Override
     public BaseRegion setCuboidPoint(int id, double x, double y, double z) {
         if (id == 0) {
-            firstPoint = new PointCube(x, y, z);
-            firstPoint.setColour(LineStyles.CUBOIDPOINT1);
+            firstPoint = new PointCube(LineStyles.CUBOIDPOINT1, x, y, z);
         } else if (id == 1) {
-            secondPoint = new PointCube(x, y, z);
-            secondPoint.setColour(LineStyles.CUBOIDPOINT2);
+            secondPoint = new PointCube(LineStyles.CUBOIDPOINT2, x, y, z);
         }
         return this;
     }
@@ -61,26 +59,26 @@ public final class CuboidRegion extends BaseRegion {
      *
      * @return
      */
-    private Vector3m[] calcBounds() {
-        val off = 0.02F;
-        val off1 = 1 + off;
+    private Vector3d[] calcBounds() {
+        val min = 0.02D;
+        val max = min + 1D;
 
-        val out = new Vector3m[]{new Vector3m(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE),
-                                 new Vector3m(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE)};
+        val out = new Vector3d[]{new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE),
+                                 new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE)};
 
         for (val point : new PointCube[]{firstPoint, secondPoint}) {
-            if (point.getPoint().getX() + off1 > out[1].getX())
-                out[1].setX(point.getPoint().getX() + off1);
-            if (point.getPoint().getX() - off < out[0].getX())
-                out[0].setX(point.getPoint().getX() - off);
-            if (point.getPoint().getY() + off1 > out[1].getY())
-                out[1].setY(point.getPoint().getY() + off1);
-            if (point.getPoint().getY() - off < out[0].getY())
-                out[0].setY(point.getPoint().getY() - off);
-            if (point.getPoint().getZ() + off1 > out[1].getZ())
-                out[1].setZ(point.getPoint().getZ() + off1);
-            if (point.getPoint().getZ() - off < out[0].getZ())
-                out[0].setZ(point.getPoint().getZ() - off);
+            if (point.x() + max > out[1].x())
+                out[1].x = point.x() + max;
+            if (point.x() - min < out[0].x())
+                out[0].x = (point.x() - min);
+            if (point.y() + max > out[1].y())
+                out[1].y = (point.y() + max);
+            if (point.y() - min < out[0].y())
+                out[0].y = (point.y() - min);
+            if (point.z() + max > out[1].z())
+                out[1].z = (point.z() + max);
+            if (point.z() - min < out[0].z())
+                out[0].z = (point.z() - min);
         }
 
         return out;

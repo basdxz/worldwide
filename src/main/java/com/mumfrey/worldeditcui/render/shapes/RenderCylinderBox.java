@@ -3,8 +3,8 @@ package com.mumfrey.worldeditcui.render.shapes;
 import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import lombok.val;
+import lombok.var;
 
-import static com.mumfrey.worldeditcui.render.RenderUtils.PI_2;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -27,26 +27,24 @@ public final class RenderCylinderBox {
         this.radZ = radZ;
         this.minY = minY;
         this.maxY = maxY;
-
-        val centerPoint = center.getPoint();
-        this.centerX = centerPoint.getX() + 0.5D;
-        this.centerZ = centerPoint.getZ() + 0.5D;
+        this.centerX = center.x() + 0.5D;
+        this.centerZ = center.z() + 0.5D;
     }
 
     public void render() {
         for (val lineStyle : lineStyles) {
             lineStyle.prepareRender();
 
-            for (int yBlock : new int[]{this.minY, this.maxY + 1}) {
+            for (var yBlock : new int[]{this.minY, this.maxY + 1}) {
                 glBegin(GL_LINE_LOOP);
                 lineStyle.prepareColour();
 
-                for (int i = 0; i <= 75; i++) {
-                    double tempTheta = i * PI_2 / 75;
-                    double tempX = this.radX * Math.cos(tempTheta);
-                    double tempZ = this.radZ * Math.sin(tempTheta);
+                for (var i = 0; i <= 75; i++) {
+                    val tempTheta = (i * Math.PI * 2) / 75;
+                    val tempX = radX * Math.cos(tempTheta);
+                    val tempZ = radZ * Math.sin(tempTheta);
 
-                    glVertex3d(this.centerX + tempX, yBlock, this.centerZ + tempZ);
+                    glVertex3d(centerX + tempX, yBlock, centerZ + tempZ);
                 }
                 glEnd();
             }

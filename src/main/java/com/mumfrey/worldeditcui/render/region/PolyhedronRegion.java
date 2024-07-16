@@ -4,9 +4,10 @@ import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.render.LineStyles;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.Render3DPolygon;
-import com.mumfrey.worldeditcui.util.Vector3;
 import lombok.val;
 import lombok.var;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +18,8 @@ import java.util.List;
  * @author TomyLobo
  */
 public final class PolyhedronRegion extends BaseRegion {
-    private static final Vector3 VEC3_HALF = new Vector3(0.5F, 0.5F, 0.5F);
-    
     private final List<PointCube> vertices = new ArrayList<>();
-    private final List<Vector3[]> faces = new ArrayList<>();
+    private final List<Vector3dc[]> faces = new ArrayList<>();
 
     public PolyhedronRegion(WorldEditCUIController controller) {
         super(controller);
@@ -41,8 +40,8 @@ public final class PolyhedronRegion extends BaseRegion {
 
     @Override
     public BaseRegion setCuboidPoint(int id, double x, double y, double z) {
-        val vertex = new PointCube(x, y, z);
-        vertex.setColour(id == 0 ? LineStyles.CUBOIDPOINT1 : LineStyles.POLYPOINT);
+        val lineStyles = id == 0 ? LineStyles.CUBOIDPOINT1 : LineStyles.POLYPOINT;
+        val vertex = new PointCube(lineStyles, x, y, z);
 
         if (id < vertices.size()) {
             vertices.set(id, vertex);
@@ -56,7 +55,7 @@ public final class PolyhedronRegion extends BaseRegion {
     
     @Override
     public BaseRegion addPolygon(int[] vertexIds) {
-        val face = new Vector3[vertexIds.length];
+        val face = new Vector3dc[vertexIds.length];
         for (var i = 0; i < vertexIds.length; ++i) {
             val vertex = vertices.get(vertexIds[i]);
             if (vertex == null) {
@@ -64,7 +63,7 @@ public final class PolyhedronRegion extends BaseRegion {
                 return this;
             }
 
-            face[i] = vertex.getPoint().add(VEC3_HALF);
+            face[i] = new Vector3d(vertex.x() + 0.5D, vertex.y() + 0.5D, vertex.z() + 0.5D);
         }
         faces.add(face);
         return this;

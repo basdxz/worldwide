@@ -18,7 +18,6 @@ public final class RenderCylinderGrid {
     private final double radZ;
     private final int minY;
     private final int maxY;
-
     private final double centerX;
     private final double centerZ;
 
@@ -28,10 +27,8 @@ public final class RenderCylinderGrid {
         this.radZ = radZ;
         this.minY = minY;
         this.maxY = maxY;
-        
-		val centerPoint = center.getPoint();
-        this.centerX = centerPoint.getX() + 0.5F;
-        this.centerZ = centerPoint.getZ() + 0.5F;
+        this.centerX = center.x() + 0.5D;
+        this.centerZ = center.z() + 0.5D;
     }
 
     public void render() {
