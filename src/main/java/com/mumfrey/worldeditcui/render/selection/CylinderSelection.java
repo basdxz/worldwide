@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.RenderCylinderBox;
 import com.mumfrey.worldeditcui.render.shapes.RenderCylinderCircles;
@@ -43,14 +43,14 @@ public final class CylinderSelection extends SelectionBase {
             tMax = (int) center.y();
         }
 
-        new RenderCylinderCircles(LineStyles.CYLINDERGRID, center, radX, radZ, tMin, tMax).render();
-        new RenderCylinderGrid(LineStyles.CYLINDERGRID, center, radX, radZ, tMin, tMax).render();
-        new RenderCylinderBox(LineStyles.CYLINDERBOX, center, radX, radZ, tMin, tMax).render();
+        new RenderCylinderCircles(LineColor.CYLINDER_GRID, center, radX, radZ, tMin, tMax).render();
+        new RenderCylinderGrid(LineColor.CYLINDER_GRID, center, radX, radZ, tMin, tMax).render();
+        new RenderCylinderBox(LineColor.CYLINDER_BOX, center, radX, radZ, tMin, tMax).render();
     }
 
     @Override
     public SelectionBase setCylinderCenter(int x, int y, int z) {
-        center = new PointCube(LineStyles.CYLINDERCENTER, x, y, z);
+        center = new PointCube(LineColor.CYLINDER_CENTER, x, y, z);
         return this;
     }
 

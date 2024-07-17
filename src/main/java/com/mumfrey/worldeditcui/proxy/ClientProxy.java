@@ -24,7 +24,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.lang.ref.WeakReference;
 
-import static com.mumfrey.worldeditcui.Tags.MOD_ID;
 import static com.mumfrey.worldeditcui.Tags.MOD_NAME;
 import static com.mumfrey.worldeditcui.WorldEditCUI.CLIENT_WECUI_API_VERSION;
 import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
@@ -56,9 +55,9 @@ public final class ClientProxy extends CommonProxy {
         this.worldRenderListener = new CUIListenerWorldRender(this.controller);
         this.channelListener = new CUIListenerChannel(this.controller);
 
-        this.keyBindToggleUI = registerKeyBind("toggle");
-        this.keyBindClearSel = registerKeyBind("clear");
-        this.keyBindRefresh = registerKeyBind("refresh");
+        this.keyBindToggleUI = registerKeyBind("keys.worldeditcui.toggle");
+        this.keyBindClearSel = registerKeyBind("keys.worldeditcui.refresh");
+        this.keyBindRefresh = registerKeyBind("keys.worldeditcui.clear");
 
         this.lastWorld = new WeakReference<>(null);
         this.lastPlayer = new WeakReference<>(null);
@@ -153,9 +152,9 @@ public final class ClientProxy extends CommonProxy {
         }
     }
 
-    private static KeyBinding registerKeyBind(String name) {
+    private static KeyBinding registerKeyBind(String langKey) {
         // All keybinds are unbound by default, and under the `WorldEdit` category
-        val keyBind = new KeyBinding(MOD_ID + ".keys." + name, Keyboard.KEY_NONE, "WorldEdit");
+        val keyBind = new KeyBinding(langKey, Keyboard.KEY_NONE, "WorldEdit");
         ClientRegistry.registerKeyBinding(keyBind);
         return keyBind;
     }

@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.Render3DBox;
 import com.mumfrey.worldeditcui.render.shapes.Render3DGrid;
@@ -31,8 +31,8 @@ public final class CuboidSelection extends SelectionBase {
     public void render() {
         if (firstPoint != null && secondPoint != null) {
             val bounds = calcBounds();
-            new Render3DGrid(LineStyles.CUBOIDGRID, bounds[0], bounds[1]).render();
-            new Render3DBox(LineStyles.CUBOIDBOX, bounds[0], bounds[1]).render();
+            new Render3DGrid(LineColor.CUBOID_GRID, bounds[0], bounds[1]).render();
+            new Render3DBox(LineColor.CUBOID_BOX, bounds[0], bounds[1]).render();
 
             firstPoint.render();
             secondPoint.render();
@@ -46,9 +46,9 @@ public final class CuboidSelection extends SelectionBase {
     @Override
     public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
         if (id == 0) {
-            firstPoint = new PointCube(LineStyles.CUBOIDPOINT1, x, y, z);
+            firstPoint = new PointCube(LineColor.CUBOID_POINT_1, x, y, z);
         } else if (id == 1) {
-            secondPoint = new PointCube(LineStyles.CUBOIDPOINT2, x, y, z);
+            secondPoint = new PointCube(LineColor.CUBOID_POINT_2, x, y, z);
         }
         return this;
     }

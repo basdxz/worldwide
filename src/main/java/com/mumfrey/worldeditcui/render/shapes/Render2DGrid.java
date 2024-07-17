@@ -1,6 +1,6 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -18,24 +18,21 @@ import static org.lwjgl.opengl.GL11.*;
  */
 
 @AllArgsConstructor
-public final class Render2DGrid {
-    private final LineStyles lineStyles;
+public final class Render2DGrid extends Render {
+    private final LineColor color;
+
     private final List<PointRectangle> points;
     private final int min;
     private final int max;
 
-    public void render() {
+    @Override
+    protected void renderImpl(boolean isVisible) {
         val eps = 0.03D;
-        for (var height = min; height <= max + 1D; height++)
-            drawPoly(height + eps);
-    }
-
-    private void drawPoly(double height) {
-        for (val lineStyle : lineStyles) {
-            lineStyle.prepareRender();
+        for (var heightOff = min; heightOff <= max + 1D; heightOff++) {
+            val height = heightOff + eps;
 
             glBegin(GL_LINE_LOOP);
-            lineStyle.prepareColour();
+            color.setGlColor(isVisible);
             for (val point : this.points) {
                 if (point != null)
                     glVertex3d(point.x() + 0.5D, height, point.y() + 0.5D);

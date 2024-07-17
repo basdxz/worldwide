@@ -1,8 +1,12 @@
 package com.mumfrey.worldeditcui.proxy;
 
-import cpw.mods.fml.common.Mod;
+import com.mumfrey.worldeditcui.config.WorldEditCUIConfig;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public abstract class CommonProxy {
+    static {
+        WorldEditCUIConfig.poke();
+    }
+
     public void preInit(FMLPreInitializationEvent evt) {}
 }

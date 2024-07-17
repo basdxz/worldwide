@@ -1,6 +1,6 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import lombok.val;
 import lombok.var;
@@ -12,8 +12,9 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author yetanotherx
  */
-public final class RenderCylinderBox {
-    private final LineStyles lineStyles;
+public final class RenderCylinderBox extends Render {
+    private final LineColor color;
+
     private final double radX;
     private final double radZ;
     private final int minY;
@@ -21,8 +22,9 @@ public final class RenderCylinderBox {
     private final double centerX;
     private final double centerZ;
 
-    public RenderCylinderBox(LineStyles lineStyles, PointCube center, double radX, double radZ, int minY, int maxY) {
-        this.lineStyles = lineStyles;
+    public RenderCylinderBox(LineColor color, PointCube center, double radX, double radZ, int minY, int maxY) {
+        this.color = color;
+
         this.radX = radX;
         this.radZ = radZ;
         this.minY = minY;
@@ -31,23 +33,20 @@ public final class RenderCylinderBox {
         this.centerZ = center.z() + 0.5D;
     }
 
-    public void render() {
-        for (val lineStyle : lineStyles) {
-            lineStyle.prepareRender();
+    @Override
+    protected void renderImpl(boolean isVisible) {
+        for (var yBlock : new int[]{this.minY, this.maxY + 1}) {
+            glBegin(GL_LINE_LOOP);
+            color.setGlColor(isVisible);
 
-            for (var yBlock : new int[]{this.minY, this.maxY + 1}) {
-                glBegin(GL_LINE_LOOP);
-                lineStyle.prepareColour();
+            for (var i = 0; i <= 75; i++) {
+                val tempTheta = (i * Math.PI * 2) / 75;
+                val tempX = radX * Math.cos(tempTheta);
+                val tempZ = radZ * Math.sin(tempTheta);
 
-                for (var i = 0; i <= 75; i++) {
-                    val tempTheta = (i * Math.PI * 2) / 75;
-                    val tempX = radX * Math.cos(tempTheta);
-                    val tempZ = radZ * Math.sin(tempTheta);
-
-                    glVertex3d(centerX + tempX, yBlock, centerZ + tempZ);
-                }
-                glEnd();
+                glVertex3d(centerX + tempX, yBlock, centerZ + tempZ);
             }
+            glEnd();
         }
     }
 }

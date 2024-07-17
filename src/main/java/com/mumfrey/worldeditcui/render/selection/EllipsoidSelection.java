@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.RenderEllipsoid;
 import org.jetbrains.annotations.Nullable;
@@ -32,13 +32,13 @@ public final class EllipsoidSelection extends SelectionBase {
     public void render() {
         if (center != null) {
             center.render();
-            new RenderEllipsoid(LineStyles.ELLIPSOIDGRID, center, radii).render();
+            new RenderEllipsoid(LineColor.ELLIPSOID_GRID, center, radii).render();
         }
     }
 
     @Override
     public SelectionBase setEllipsoidCenter(int x, int y, int z) {
-        center = new PointCube(LineStyles.ELLIPSOIDCENTER, x, y, z);
+        center = new PointCube(LineColor.ELLIPSOID_CENTER, x, y, z);
         return this;
     }
 

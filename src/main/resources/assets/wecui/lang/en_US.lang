@@ -1,3 +1,34 @@
-worldeditcui.keys.toggle=Toggle CUI
-worldeditcui.keys.refresh=Refresh CUI
-worldeditcui.keys.clear=Clear Selection
+# Keybinds
+keys.worldeditcui.toggle=Toggle CUI
+keys.worldeditcui.refresh=Refresh CUI
+keys.worldeditcui.clear=Clear Selection
+
+# Configs
+config.worldeditcui.general.show_hidden_lines=Show Hidden Lines
+config.worldeditcui.general.show_hidden_lines.tooltip=Toggles rendering hidden selection lines
+
+config.worldeditcui.color.cuboid_box=Cuboid Box Color
+config.worldeditcui.color.cuboid_box.tooltip=#RRGGBBAA
+config.worldeditcui.color.cuboid_grid=Cuboid Grid Color
+config.worldeditcui.color.cuboid_grid.tooltip=#RRGGBBAA
+config.worldeditcui.color.cuboid_point_1=First Cuboid Point Color
+config.worldeditcui.color.cuboid_point_1.tooltip=#RRGGBBAA
+config.worldeditcui.color.cuboid_point_2=Second Cuboid Point Color
+config.worldeditcui.color.cuboid_point_2.tooltip=#RRGGBBAA
+
+config.worldeditcui.color.polygon_grid=Polygon Grid Color
+config.worldeditcui.color.polygon_grid.tooltip=#RRGGBBAA
+config.worldeditcui.color.polygon_point=Polygon Point Color
+config.worldeditcui.color.polygon_point.tooltip=#RRGGBBAA
+
+config.worldeditcui.color.ellipsoid_grid=Ellipsoid Grid Color
+config.worldeditcui.color.ellipsoid_grid.tooltip=#RRGGBBAA
+config.worldeditcui.color.ellipsoid_center=Ellipsoid Center Color
+config.worldeditcui.color.ellipsoid_center.tooltip=#RRGGBBAA
+
+config.worldeditcui.color.cylinder_box=Cylinder Box Color
+config.worldeditcui.color.cylinder_box.tooltip=#RRGGBBAA
+config.worldeditcui.color.cylinder_grid=Cylinder Grid Color
+config.worldeditcui.color.cylinder_grid.tooltip=#RRGGBBAA
+config.worldeditcui.color.cylinder_center=Cylinder Center Color
+config.worldeditcui.color.cylinder_center.tooltip=#RRGGBBAA

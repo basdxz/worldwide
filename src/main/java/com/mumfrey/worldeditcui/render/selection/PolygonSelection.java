@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointRectangle;
 import com.mumfrey.worldeditcui.render.shapes.Render2DBox;
 import com.mumfrey.worldeditcui.render.shapes.Render2DGrid;
@@ -31,8 +31,8 @@ public final class PolygonSelection extends SelectionBase {
         for (val point : points)
             point.render(min, max);
 
-        new Render2DBox(LineStyles.POLYBOX, points, min, max).render();
-        new Render2DGrid(LineStyles.POLYGRID, points, min, max).render();
+        new Render2DBox(LineColor.POLYGON_BOX, points, min, max).render();
+        new Render2DGrid(LineColor.POLYGON_GRID, points, min, max).render();
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class PolygonSelection extends SelectionBase {
 
     @Override
     public SelectionBase setPolygonPoint(int id, int x, int z) {
-        val point = new PointRectangle(LineStyles.POLYPOINT, x, z);
+        val point = new PointRectangle(LineColor.POLYGON_POINT, x, z);
 
         if (id < points.size()) {
             points.set(id, point);

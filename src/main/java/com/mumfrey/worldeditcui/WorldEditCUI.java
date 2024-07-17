@@ -15,7 +15,8 @@ import static com.mumfrey.worldeditcui.Tags.*;
      name = MOD_NAME,
      version = MOD_VERSION,
      dependencies = "required-after:worldedit@[6.2.0,);",
-     acceptableRemoteVersions = "*")
+     acceptableRemoteVersions = "*",
+     guiFactory = ROOT_PKG + ".gui.WorldEditCUIGuiFactory")
 public final class WorldEditCUI {
     public static final int CLIENT_WECUI_API_VERSION = 4;
 

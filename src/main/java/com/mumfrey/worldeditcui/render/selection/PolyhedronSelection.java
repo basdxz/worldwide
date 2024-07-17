@@ -1,7 +1,7 @@
 package com.mumfrey.worldeditcui.render.selection;
 
 import com.mumfrey.worldeditcui.WorldEditCUIController;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.render.shapes.Render3DPolygon;
 import lombok.val;
@@ -35,13 +35,13 @@ public final class PolyhedronSelection extends SelectionBase {
         for (val vertex : this.vertices)
             vertex.render();
         for (val face : this.faces)
-            new Render3DPolygon(LineStyles.POLYBOX, face).render();
+            new Render3DPolygon(LineColor.POLYGON_BOX, face).render();
     }
 
     @Override
     public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
-        val lineStyles = id == 0 ? LineStyles.CUBOIDPOINT1 : LineStyles.POLYPOINT;
-        val vertex = new PointCube(lineStyles, x, y, z);
+        val color = id == 0 ? LineColor.CUBOID_POINT_1 : LineColor.POLYGON_POINT;
+        val vertex = new PointCube(color, x, y, z);
 
         if (id < vertices.size()) {
             vertices.set(id, vertex);

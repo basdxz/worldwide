@@ -1,7 +1,6 @@
 package com.mumfrey.worldeditcui.render.shapes;
 
-import com.mumfrey.worldeditcui.render.LineStyle;
-import com.mumfrey.worldeditcui.render.LineStyles;
+import com.mumfrey.worldeditcui.config.LineColor;
 import com.mumfrey.worldeditcui.render.points.PointCube;
 import lombok.val;
 import lombok.var;
@@ -14,35 +13,35 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author yetanotherx
  */
-public final class RenderEllipsoid {
-    private final LineStyles lineStyles;
+public final class RenderEllipsoid extends Render {
+    private final LineColor color;
+
     private final Vector3dc radii;
     private final double centerX;
     private final double centerY;
     private final double centerZ;
 
-    public RenderEllipsoid(LineStyles lineStyles, PointCube center, Vector3dc radii) {
-        this.lineStyles = lineStyles;
+    public RenderEllipsoid(LineColor color, PointCube center, Vector3dc radii) {
+        this.color = color;
+        
         this.radii = radii;
         this.centerX = center.x() + 0.5D;
         this.centerY = center.y() + 0.5D;
         this.centerZ = center.z() + 0.5D;
     }
 
-    public void render() {
-        for (val lineStyle : lineStyles) {
-            lineStyle.prepareRender();
-            drawXZPlane(lineStyle);
-            drawYZPlane(lineStyle);
-            drawXYPlane(lineStyle);
-        }
+    @Override
+    protected void renderImpl(boolean isVisible) {
+        drawXZPlane(isVisible);
+        drawYZPlane(isVisible);
+        drawXYPlane(isVisible);
     }
 
-    private void drawXZPlane(LineStyle colour) {
+    private void drawXZPlane(boolean isVisible) {
         val yRad = (int) Math.floor(radii.y());
         for (var yBlock = -yRad; yBlock < yRad; yBlock++) {
             glBegin(GL_LINE_LOOP);
-            colour.prepareColour();
+            color.setGlColor(isVisible);
 
             for (var i = 0; i <= 40; i++) {
                 val tempTheta = i * (Math.PI * 2 / 40D);
@@ -54,7 +53,7 @@ public final class RenderEllipsoid {
         }
 
         glBegin(GL_LINE_LOOP);
-        colour.prepareColour();
+        color.setGlColor(isVisible);
 
         for (var i = 0; i <= 40; i++) {
             val tempTheta = i * (Math.PI * 2 / 40D);
@@ -66,11 +65,11 @@ public final class RenderEllipsoid {
         glEnd();
     }
 
-    private void drawYZPlane(LineStyle colour) {
+    private void drawYZPlane(boolean isVisible) {
         val xRad = (int) Math.floor(radii.x());
         for (var xBlock = -xRad; xBlock < xRad; xBlock++) {
             glBegin(GL_LINE_LOOP);
-            colour.prepareColour();
+            color.setGlColor(isVisible);
 
             for (var i = 0; i <= 40; i++) {
                 val tempTheta = (Math.PI * 2 / 40D) * i;
@@ -83,7 +82,7 @@ public final class RenderEllipsoid {
         }
 
         glBegin(GL_LINE_LOOP);
-        colour.prepareColour();
+        color.setGlColor(isVisible);
 
         for (var i = 0; i <= 40; i++) {
             val tempTheta = (Math.PI * 2 / 40D) * i;
@@ -95,11 +94,11 @@ public final class RenderEllipsoid {
         glEnd();
     }
 
-    private void drawXYPlane(LineStyle colour) {
+    private void drawXYPlane(boolean isVisible) {
         val zRad = (int) Math.floor(radii.z());
         for (var zBlock = -zRad; zBlock < zRad; zBlock++) {
             glBegin(GL_LINE_LOOP);
-            colour.prepareColour();
+            color.setGlColor(isVisible);
 
             for (var i = 0; i <= 40; i++) {
                 val tempTheta = (Math.PI * 2 / 40D) * i;
@@ -112,7 +111,7 @@ public final class RenderEllipsoid {
         }
 
         glBegin(GL_LINE_LOOP);
-        colour.prepareColour();
+        color.setGlColor(isVisible);
 
         for (var i = 0; i <= 40; i++) {
             val tempTheta = (Math.PI * 2 / 40D) * i;
