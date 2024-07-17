@@ -1,11 +1,10 @@
 package com.mumfrey.worldeditcui.config;
 
-import lombok.SneakyThrows;
+import com.mumfrey.worldeditcui.config.WorldEditCUIConfig.Color;
 import lombok.val;
 import lombok.var;
 import org.lwjgl.opengl.GL11;
 
-import java.lang.invoke.MethodHandles;
 import java.util.function.Supplier;
 
 import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
@@ -14,21 +13,21 @@ import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
  * @author Ven
  */
 public enum LineColor {
-    CUBOID_BOX,
-    CUBOID_GRID,
-    CUBOID_POINT_1,
-    CUBOID_POINT_2,
+    CUBOID_BOX(() -> Color.CUBOID_BOX),
+    CUBOID_GRID(() -> Color.CUBOID_GRID),
+    CUBOID_POINT_1(() -> Color.CUBOID_POINT_1),
+    CUBOID_POINT_2(() -> Color.CUBOID_POINT_2),
 
-    POLYGON_BOX,
-    POLYGON_GRID,
-    POLYGON_POINT,
+    POLYGON_BOX(() -> Color.POLYGON_BOX),
+    POLYGON_GRID(() -> Color.POLYGON_GRID),
+    POLYGON_POINT(() -> Color.POLYGON_POINT),
 
-    ELLIPSOID_GRID,
-    ELLIPSOID_CENTER,
+    ELLIPSOID_GRID(() -> Color.ELLIPSOID_GRID),
+    ELLIPSOID_CENTER(() -> Color.ELLIPSOID_CENTER),
 
-    CYLINDER_BOX,
-    CYLINDER_GRID,
-    CYLINDER_CENTER,
+    CYLINDER_BOX(() -> Color.CYLINDER_BOX),
+    CYLINDER_GRID(() -> Color.CYLINDER_GRID),
+    CYLINDER_CENTER(() -> Color.CYLINDER_CENTER),
     ;
 
     private static final LineColor[] VALUES = values();
@@ -40,13 +39,9 @@ public enum LineColor {
     private float b;
     private float a;
 
-    LineColor() {
-        this.getter = createGetter(name());
+    LineColor(Supplier<String> getter) {
+        this.getter = getter;
         update();
-    }
-
-    public void setGlColorOld(float alphaMult) {
-        GL11.glColor4f(r, g, b, a * alphaMult);
     }
 
     public void setGlColor(boolean isVisible) {
@@ -72,17 +67,5 @@ public enum LineColor {
             a = 1F;
             LOG.warn("Failed to update color: [{}] with invalid value: [{}]", name(), hex, e);
         }
-    }
-
-    @SneakyThrows
-    private static Supplier<String> createGetter(String name) {
-        val mh = MethodHandles.publicLookup().findStaticGetter(WorldEditCUIConfig.Color.class, name, String.class);
-        return new Supplier<String>() {
-            @Override
-            @SneakyThrows
-            public String get() {
-                return (String) mh.invokeExact();
-            }
-        };
     }
 }
