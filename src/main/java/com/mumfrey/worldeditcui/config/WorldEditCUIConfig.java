@@ -51,76 +51,76 @@ public final class WorldEditCUIConfig {
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cuboid_box")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC3333CC")
+        @Config.DefaultString("#4F6190CC")
         public static String CUBOID_BOX;
         @Config.Name("cuboidGrid")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cuboid_grid")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC4C4CCC")
+        @Config.DefaultString("#5074CFCC")
         public static String CUBOID_GRID;
         @Config.Name("cuboidPoint1")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cuboid_point_1")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#33CC33CC")
+        @Config.DefaultString("#0CB61ACC")
         public static String CUBOID_POINT_1;
         @Config.Name("cuboidPoint2")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cuboid_point_2")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#3333CCCC")
+        @Config.DefaultString("#E1B61ACC")
         public static String CUBOID_POINT_2;
 
         @Config.Name("polygonBox")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.polygon_box")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC4C4CCC")
+        @Config.DefaultString("#4F6190CC")
         public static String POLYGON_BOX;
         @Config.Name("polygonGrid")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.polygon_grid")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC3333CC")
+        @Config.DefaultString("#277BDBCC")
         public static String POLYGON_GRID;
         @Config.Name("polygonPoint")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.polygon_point")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#33CCCCCC")
+        @Config.DefaultString("#0CB61ACC")
         public static String POLYGON_POINT;
 
         @Config.Name("ellipsoidGrid")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.ellipsoid_grid")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC4C4CCC")
+        @Config.DefaultString("#277BDBCC")
         public static String ELLIPSOID_GRID;
         @Config.Name("ellipsoidPoint")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.ellipsoid_center")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CCCC33CC")
+        @Config.DefaultString("#0CB61ACC")
         public static String ELLIPSOID_CENTER;
 
         @Config.Name("cylinderBox")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cylinder_box")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC4C4CCC")
+        @Config.DefaultString("#4F6190CC")
         public static String CYLINDER_BOX;
         @Config.Name("cylinderGrid")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cylinder_grid")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC3333CC")
+        @Config.DefaultString("#277BDBCC")
         public static String CYLINDER_GRID;
         @Config.Name("cylinderCenter")
         @Config.Comment("#RRGGBBAA")
         @Config.LangKey("config.worldeditcui.color.cylinder_center")
         @Config.Pattern(HEX_COL_REGEX)
-        @Config.DefaultString("#CC33CCCC")
+        @Config.DefaultString("#0CB61ACC")
         public static String CYLINDER_CENTER;
     }
 }
