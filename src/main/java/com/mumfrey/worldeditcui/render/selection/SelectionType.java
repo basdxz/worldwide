@@ -24,7 +24,7 @@ public enum SelectionType {
     private final String key;
     @Getter(AccessLevel.NONE)
     private final String name;
-    private final Class<? extends SelectionBase> selectionClass;
+    private final Class<? extends Selection> selectionClass;
 
     @Override
     public String toString() {

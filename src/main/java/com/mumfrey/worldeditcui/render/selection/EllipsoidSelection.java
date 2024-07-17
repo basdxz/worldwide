@@ -13,7 +13,7 @@ import org.joml.Vector3d;
  * @author yetanotherx
  * @author lahwran
  */
-public final class EllipsoidSelection extends SelectionBase {
+public final class EllipsoidSelection extends Selection {
     private final Vector3d radii = new Vector3d();
 
     @Nullable
@@ -37,13 +37,13 @@ public final class EllipsoidSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionBase setEllipsoidCenter(int x, int y, int z) {
+    public Selection setEllipsoidCenter(int x, int y, int z) {
         center = new PointCube(LineColor.ELLIPSOID_CENTER, x, y, z);
         return this;
     }
 
     @Override
-    public SelectionBase setEllipsoidRadii(double x, double y, double z) {
+    public Selection setEllipsoidRadii(double x, double y, double z) {
         radii.set(x, y, z);
         return this;
     }

@@ -14,7 +14,7 @@ import org.joml.Vector3d;
  * @author yetanotherx
  * @author lahwran
  */
-public final class CuboidSelection extends SelectionBase {
+public final class CuboidSelection extends Selection {
     private PointCube firstPoint;
     private PointCube secondPoint;
 
@@ -44,7 +44,7 @@ public final class CuboidSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
+    public Selection setCuboidPoint(int id, double x, double y, double z) {
         if (id == 0) {
             firstPoint = new PointCube(LineColor.CUBOID_POINT_1, x, y, z);
         } else if (id == 1) {

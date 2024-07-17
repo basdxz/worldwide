@@ -12,10 +12,10 @@ import com.mumfrey.worldeditcui.exceptions.InvalidSelectionTypeException;
  * @author yetanotherx
  * @author lahwran
  */
-public abstract class SelectionBase implements InitializationFactory {
+public abstract class Selection implements InitializationFactory {
     protected WorldEditCUIController controller;
 
-    public SelectionBase(WorldEditCUIController controller) {
+    public Selection(WorldEditCUIController controller) {
         this.controller = controller;
     }
 
@@ -26,35 +26,35 @@ public abstract class SelectionBase implements InitializationFactory {
 
     public abstract void render();
 
-    public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
+    public Selection setCuboidPoint(int id, double x, double y, double z) {
         throw new InvalidSelectionTypeException(type(), "setCuboidPoint");
     }
 
-    public SelectionBase setPolygonPoint(int id, int x, int z) {
+    public Selection setPolygonPoint(int id, int x, int z) {
         throw new InvalidSelectionTypeException(type(), "setPolygonPoint");
     }
 
-    public SelectionBase setEllipsoidCenter(int x, int y, int z) {
+    public Selection setEllipsoidCenter(int x, int y, int z) {
         throw new InvalidSelectionTypeException(type(), "setEllipsoidCenter");
     }
 
-    public SelectionBase setEllipsoidRadii(double x, double y, double z) {
+    public Selection setEllipsoidRadii(double x, double y, double z) {
         throw new InvalidSelectionTypeException(type(), "setEllipsoidRadii");
     }
 
-    public SelectionBase setMinMax(int min, int max) {
+    public Selection setMinMax(int min, int max) {
         throw new InvalidSelectionTypeException(type(), "setMinMax");
     }
 
-    public SelectionBase setCylinderCenter(int x, int y, int z) {
+    public Selection setCylinderCenter(int x, int y, int z) {
         throw new InvalidSelectionTypeException(type(), "setCylinderCenter");
     }
 
-    public SelectionBase setCylinderRadius(double x, double z) {
+    public Selection setCylinderRadius(double x, double z) {
         throw new InvalidSelectionTypeException(type(), "setCylinderRadius");
     }
 
-    public SelectionBase addPolygon(int[] vertexIds) {
+    public Selection addPolygon(int[] vertexIds) {
         throw new InvalidSelectionTypeException(type(), "addPolygon");
     }
 }

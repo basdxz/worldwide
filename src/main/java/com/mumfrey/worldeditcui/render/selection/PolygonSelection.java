@@ -16,7 +16,7 @@ import java.util.List;
  * @author yetanotherx
  * @author lahwran
  */
-public final class PolygonSelection extends SelectionBase {
+public final class PolygonSelection extends Selection {
     private final List<PointRectangle> points = new ArrayList<>();
 
     private int min;
@@ -36,14 +36,14 @@ public final class PolygonSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionBase setMinMax(int min, int max) {
+    public Selection setMinMax(int min, int max) {
         this.min = min;
         this.max = max;
         return this;
     }
 
     @Override
-    public SelectionBase setPolygonPoint(int id, int x, int z) {
+    public Selection setPolygonPoint(int id, int x, int z) {
         val point = new PointRectangle(LineColor.POLYGON_POINT, x, z);
 
         if (id < points.size()) {

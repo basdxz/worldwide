@@ -4,7 +4,7 @@ import com.mumfrey.worldeditcui.event.CUIEventDispatcher;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
 import com.mumfrey.worldeditcui.render.CUISelectionProvider;
 import com.mumfrey.worldeditcui.render.selection.CuboidSelection;
-import com.mumfrey.worldeditcui.render.selection.SelectionBase;
+import com.mumfrey.worldeditcui.render.selection.Selection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 public final class WorldEditCUIController implements InitializationFactory {
     @Setter
-    private SelectionBase selection;
+    private Selection selection;
 
     private CUIEventDispatcher dispatcher;
     private CUISelectionProvider selectionProvider;

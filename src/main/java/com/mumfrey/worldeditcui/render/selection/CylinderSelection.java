@@ -13,7 +13,7 @@ import lombok.var;
  *
  * @author yetanotherx
  */
-public final class CylinderSelection extends SelectionBase {
+public final class CylinderSelection extends Selection {
     private PointCube center;
     private double radX = 0;
     private double radZ = 0;
@@ -49,20 +49,20 @@ public final class CylinderSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionBase setCylinderCenter(int x, int y, int z) {
+    public Selection setCylinderCenter(int x, int y, int z) {
         center = new PointCube(LineColor.CYLINDER_CENTER, x, y, z);
         return this;
     }
 
     @Override
-    public SelectionBase setCylinderRadius(double x, double z) {
+    public Selection setCylinderRadius(double x, double z) {
         this.radX = x;
         this.radZ = z;
         return this;
     }
 
     @Override
-    public SelectionBase setMinMax(int min, int max) {
+    public Selection setMinMax(int min, int max) {
         this.minY = min;
         this.maxY = max;
         return this;

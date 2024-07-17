@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author TomyLobo
  */
-public final class PolyhedronSelection extends SelectionBase {
+public final class PolyhedronSelection extends Selection {
     private final List<PointCube> vertices = new ArrayList<>();
     private final List<Vector3dc[]> faces = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public final class PolyhedronSelection extends SelectionBase {
     }
 
     @Override
-    public SelectionBase setCuboidPoint(int id, double x, double y, double z) {
+    public Selection setCuboidPoint(int id, double x, double y, double z) {
         val color = id == 0 ? LineColor.CUBOID_POINT_1 : LineColor.POLYGON_POINT;
         val vertex = new PointCube(color, x, y, z);
 
@@ -54,7 +54,7 @@ public final class PolyhedronSelection extends SelectionBase {
     }
     
     @Override
-    public SelectionBase addPolygon(int[] vertexIds) {
+    public Selection addPolygon(int[] vertexIds) {
         val face = new Vector3dc[vertexIds.length];
         for (var i = 0; i < vertexIds.length; ++i) {
             val vertex = vertices.get(vertexIds[i]);

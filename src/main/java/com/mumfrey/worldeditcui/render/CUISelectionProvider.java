@@ -3,7 +3,7 @@ package com.mumfrey.worldeditcui.render;
 import com.mumfrey.worldeditcui.InitializationFactory;
 import com.mumfrey.worldeditcui.WorldEditCUIController;
 import com.mumfrey.worldeditcui.exceptions.InitializationException;
-import com.mumfrey.worldeditcui.render.selection.SelectionBase;
+import com.mumfrey.worldeditcui.render.selection.Selection;
 import com.mumfrey.worldeditcui.render.selection.SelectionType;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -21,7 +21,7 @@ import static com.mumfrey.worldeditcui.WorldEditCUI.LOG;
 public final class CUISelectionProvider implements InitializationFactory {
     private final WorldEditCUIController controller;
 
-    private final Map<String, Constructor<? extends SelectionBase>> selectionConstructors = new HashMap<>();
+    private final Map<String, Constructor<? extends Selection>> selectionConstructors = new HashMap<>();
 
     @Override
     public void initialize() throws InitializationException {
@@ -40,7 +40,7 @@ public final class CUISelectionProvider implements InitializationFactory {
         }
     }
 
-    public SelectionBase createSelection(String key) {
+    public Selection createSelection(String key) {
         val ctor = this.selectionConstructors.get(key);
         if (ctor == null) {
             LOG.warn("Unknown selection type: [{}]", key);
