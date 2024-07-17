@@ -16,6 +16,8 @@ config.worldeditcui.color.cuboid_point_1.tooltip=#RRGGBBAA
 config.worldeditcui.color.cuboid_point_2=Second Cuboid Point Color
 config.worldeditcui.color.cuboid_point_2.tooltip=#RRGGBBAA
 
+config.worldeditcui.color.polygon_box=Polygon Box Color
+config.worldeditcui.color.polygon_box.tooltip=#RRGGBBAA
 config.worldeditcui.color.polygon_grid=Polygon Grid Color
 config.worldeditcui.color.polygon_grid.tooltip=#RRGGBBAA
 config.worldeditcui.color.polygon_point=Polygon Point Color
