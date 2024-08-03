@@ -14,7 +14,7 @@ import static com.mumfrey.worldeditcui.Tags.*;
 @Mod(modid = MOD_ID,
      name = MOD_NAME,
      version = MOD_VERSION,
-     dependencies = "required-after:worldedit@[6.2.0,);",
+     dependencies = "required-after:worldedit@[6.3.0,);",
      acceptableRemoteVersions = "*",
      guiFactory = ROOT_PKG + ".gui.WorldEditCUIGuiFactory")
 public final class WorldEditCUI {
