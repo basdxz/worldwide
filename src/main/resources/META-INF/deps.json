@@ -11,7 +11,7 @@
     },
     "obf"   : {
       "common": [],
-      "client": ["org.joml:joml:1.10.7"],
+      "client": ["org.joml:joml:1.10.8"],
       "server": []
     },
     "dev"   : {
