@@ -6,9 +6,9 @@ group = "com.ventooth"
 
 minecraft_fp {
     mod {
-        modid   = "worldeditcui"
-        name    = "WorldEditCUI"
-        rootPkg = "com.mumfrey.worldeditcui"
+        modid = "worldwide"
+        name = "Worldwide"
+        rootPkg = "$group.worldwide"
     }
 
     tokens {

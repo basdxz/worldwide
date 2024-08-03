@@ -1,0 +1,36 @@
+# Keybinds
+keys.worldwide.toggle=Toggle CUI
+keys.worldwide.refresh=Refresh CUI
+keys.worldwide.clear=Clear Selection
+
+# Configs
+config.worldwide.general.show_hidden_lines=Show Hidden Lines
+config.worldwide.general.show_hidden_lines.tooltip=Toggles rendering hidden selection lines
+
+config.worldwide.color.cuboid_box=Cuboid Box Color
+config.worldwide.color.cuboid_box.tooltip=#RRGGBBAA
+config.worldwide.color.cuboid_grid=Cuboid Grid Color
+config.worldwide.color.cuboid_grid.tooltip=#RRGGBBAA
+config.worldwide.color.cuboid_point_1=First Cuboid Point Color
+config.worldwide.color.cuboid_point_1.tooltip=#RRGGBBAA
+config.worldwide.color.cuboid_point_2=Second Cuboid Point Color
+config.worldwide.color.cuboid_point_2.tooltip=#RRGGBBAA
+
+config.worldwide.color.polygon_box=Polygon Box Color
+config.worldwide.color.polygon_box.tooltip=#RRGGBBAA
+config.worldwide.color.polygon_grid=Polygon Grid Color
+config.worldwide.color.polygon_grid.tooltip=#RRGGBBAA
+config.worldwide.color.polygon_point=Polygon Point Color
+config.worldwide.color.polygon_point.tooltip=#RRGGBBAA
+
+config.worldwide.color.ellipsoid_grid=Ellipsoid Grid Color
+config.worldwide.color.ellipsoid_grid.tooltip=#RRGGBBAA
+config.worldwide.color.ellipsoid_center=Ellipsoid Center Color
+config.worldwide.color.ellipsoid_center.tooltip=#RRGGBBAA
+
+config.worldwide.color.cylinder_box=Cylinder Box Color
+config.worldwide.color.cylinder_box.tooltip=#RRGGBBAA
+config.worldwide.color.cylinder_grid=Cylinder Grid Color
+config.worldwide.color.cylinder_grid.tooltip=#RRGGBBAA
+config.worldwide.color.cylinder_center=Cylinder Center Color
+config.worldwide.color.cylinder_center.tooltip=#RRGGBBAA
